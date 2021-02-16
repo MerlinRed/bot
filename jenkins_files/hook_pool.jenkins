@@ -1,5 +1,5 @@
 #!groovy
-// Check GitHub and pull commits!
+// Check GitHub and pull commits
 properties([disableConcurrentBuilds()])
 
 pipeline {
