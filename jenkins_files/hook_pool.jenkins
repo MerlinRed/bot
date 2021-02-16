@@ -1,0 +1,21 @@
+#!groovy
+// Check GitHub and pull commits!
+properties([disableConcurrentBuilds()])
+
+pipeline {
+    agent {
+        label 'master'
+        }
+    triggers { pollSCM('* * * * *') }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10', artifactNumToKeepStr: '10'))
+        timestamps()
+    }
+    stages {
+        stage("update project") {
+            steps {
+                sh 'cd /home/tele/bot && git pull'
+            }
+        }
+    }
+}
