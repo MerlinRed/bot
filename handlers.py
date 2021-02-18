@@ -36,16 +36,11 @@ def auth_reg(message):
     elif not check_user_authorization(user_id=message.from_user.id):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
     else:
-        choice_letter(message)
-
-
-@bot.message_handler(commands=["start"])
-def choice_letter(message):
-    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
-    inline_button_choice_letter = types.InlineKeyboardMarkup()
-    buttons = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for letter in alphabet]
-    inline_button_choice_letter.add(*buttons)
-    bot.send_message(message.chat.id, 'Выберите свой город.', reply_markup=inline_button_choice_letter)
+        alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+        inline_button_choice_letter = types.InlineKeyboardMarkup()
+        buttons = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for letter in alphabet]
+        inline_button_choice_letter.add(*buttons)
+        bot.send_message(message.chat.id, 'Выберите свой город.', reply_markup=inline_button_choice_letter)
 
 
 @bot.callback_query_handler(func=lambda letter: True)
