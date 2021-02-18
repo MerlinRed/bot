@@ -2,6 +2,7 @@
 from telebot import types
 
 from authorization import authorization_email, check_user_authorization, exit_user_from_account
+from create_file_with_cities import search_file_with_cites
 from load_all import bot
 from registration import registration, check_registration_user
 
@@ -35,4 +36,28 @@ def auth_reg(message):
     elif not check_user_authorization(user_id=message.from_user.id):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
     else:
-        bot.send_message(chat_id=message.chat.id, text='А тут ничего и нет')
+        choice_letter(message)
+
+
+@bot.message_handler(commands=["start"])
+def choice_letter(message):
+    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+    inline_button_choice_letter = types.InlineKeyboardMarkup()
+    buttons = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for letter in alphabet]
+    inline_button_choice_letter.add(*buttons)
+    bot.send_message(message.chat.id, 'Выберите свой город.', reply_markup=inline_button_choice_letter)
+
+
+@bot.callback_query_handler(func=lambda letter: True)
+def choice_city(letter):
+    if letter.data:
+        define_data(letter.message)
+
+
+def define_data(message):
+    cities = search_file_with_cites(message.text)
+    inline_button_choice_city = [types.InlineKeyboardButton(f'{city}', callback_data='города') for city in
+                                 cities]
+    inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
+    bot.send_message(chat_id=message.chat.id, text='Выберите город и дату, чтобы посмотреть мероприятия.',
+                     reply_markup=inline_markup_choice_city)
