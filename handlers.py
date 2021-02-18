@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 from telebot import types
-from telegram_bot_calendar import DetailedTelegramCalendar, LSTEP
 
 from authorization import authorization_email, check_user_authorization, exit_user_from_account
 from create_file_with_cities import search_file_with_cites
@@ -37,8 +36,8 @@ def auth_reg(message):
     elif not check_user_authorization(user_id=message.from_user.id):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
     else:
-        open_calendar_choice_year(message)
-        choice_letter_your_city(message)
+        # choice_letter_your_city(message)
+        calendar(message)
 
 
 def choice_letter_your_city(message):
@@ -49,7 +48,7 @@ def choice_letter_your_city(message):
                                    letter in alphabet]
     inline_markup_choice_letter = types.InlineKeyboardMarkup().add(inline_button_enter_your_city,
                                                                    *inline_button_choice_letter)
-    bot.send_message(message.chat.id, 'Нажмите на начальную букву вашего города.',
+    bot.send_message(chat_id=message.chat.id, text='Нажмите на начальную букву вашего города.',
                      reply_markup=inline_markup_choice_letter)
 
 
@@ -72,16 +71,32 @@ def choice_city(callback):
                                  reply_markup=inline_markup_choice_city)
 
 
-def open_calendar_choice_year(message):
-    calendar, step = DetailedTelegramCalendar().build()
-    bot.send_message(message.chat.id, f"Выберите {LSTEP[step]}", reply_markup=calendar)
+def calendar(message):
+    years = [2021, 2022, 2023, 2024]
+    inline_button_choice_year = [types.InlineKeyboardButton(text=f'{year}', callback_data=f'{year}') for
+                                 year in years]
+    inline_markup_choice_year = types.InlineKeyboardMarkup().add(*inline_button_choice_year)
+    bot.send_message(chat_id=message.chat.id, text='Выберите интересующий вас год',
+                     reply_markup=inline_markup_choice_year)
 
 
-@bot.callback_query_handler(func=DetailedTelegramCalendar.func())
+@bot.callback_query_handler(func=lambda callback: True)
 def choice_date_in_calendar(callback):
-    result, key, step = DetailedTelegramCalendar().process(callback.data)
-    if not result and key:
-        bot.edit_message_text(f"Select {LSTEP[step]}", callback.message.chat.id, callback.message.message_id,
-                              reply_markup=key)
-    elif result:
-        bot.edit_message_text(f"You selected {result}", callback.message.chat.id, callback.message.message_id)
+    years = [2021, 2022, 2023, 2024]
+    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь',
+              'Ноябрь', 'Декабрь']
+    for year in years:
+        if callback.data == year:
+            inline_button_choice_month = [types.InlineKeyboardButton(text=f'{month}', callback_data=f'{month}') for
+                                          month in months]
+            inline_markup_choice_month = types.InlineKeyboardMarkup().add(*inline_button_choice_month)
+            bot.send_message(chat_id=callback.message.chat.id, text='Выберите интересующий вас год',
+                             reply_markup=inline_markup_choice_month)
+
+        elif callback.data == months:
+            inline_button_choice_days = [types.InlineKeyboardButton(text=f'{day}', callback_data=f'{day}') for
+                                         day in range(1, 30 + 1)]
+
+            inline_markup_choice_days = types.InlineKeyboardMarkup().add(*inline_button_choice_days)
+            bot.send_message(chat_id=callback.message.chat.id, text='Выберите интересующий вас год',
+                             reply_markup=inline_markup_choice_days)
