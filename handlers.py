@@ -48,12 +48,9 @@ def choice_city(callback):
     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
     for char in alphabet:
         if callback.data == char:
-            bot.send_message(chat_id=callback.message.chat.id, text=f'{callback.data}')
-
-
-def define_data(message):
-    cities = search_file_with_cites(message.text)
-    inline_button_choice_city = [types.InlineKeyboardButton(f'{city}') for city in cities]
-    inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
-    bot.send_message(chat_id=message.chat.id, text='Выберите город и дату, чтобы посмотреть мероприятия.',
-                     reply_markup=inline_markup_choice_city)
+            cities = search_file_with_cites(callback.data)
+            inline_button_choice_city = [types.InlineKeyboardButton(f'{city}') for city in cities]
+            inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
+            bot.send_message(chat_id=callback.message.chat.id,
+                             text='Выберите город и дату, чтобы посмотреть мероприятия.',
+                             reply_markup=inline_markup_choice_city)
