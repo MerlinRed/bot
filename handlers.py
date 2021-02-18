@@ -37,21 +37,21 @@ def auth_reg(message):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
     else:
         alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
-        inline_button_choice_letter = types.InlineKeyboardMarkup()
         buttons = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for letter in alphabet]
-        inline_button_choice_letter.add(*buttons)
+        inline_button_choice_letter = types.InlineKeyboardMarkup().add(*buttons)
         bot.send_message(message.chat.id, 'Нажмите на начальную букву вашего города.',
                          reply_markup=inline_button_choice_letter)
 
 
 @bot.callback_query_handler(func=lambda letter: True)
 def choice_city(letter):
-    if letter.data == letter.message:
-        define_data(letter.message)
+    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+    if letter.data in alphabet:
+        define_data(letter.data)
 
 
 def define_data(message):
-    cities = search_file_with_cites(message.text)
+    cities = search_file_with_cites(message)
     inline_button_choice_city = [types.InlineKeyboardButton(f'{city}') for city in cities]
     inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
     bot.send_message(chat_id=message.chat.id, text='Выберите город и дату, чтобы посмотреть мероприятия.',
