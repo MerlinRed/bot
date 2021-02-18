@@ -100,6 +100,7 @@ def months_in_calendar(message):
 
 
 def days_in_calendar(message):
+    bot.send_message(chat_id=message.chat.id, text=message.text)
     days = [str(x) for x in range(1, 31 + 1)]
     inline_button_choice_day = [types.InlineKeyboardButton(text=f'{day}', callback_data=f'{day}') for
                                 day in days]
