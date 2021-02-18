@@ -45,14 +45,8 @@ def auth_reg(message):
 
 @bot.callback_query_handler(func=lambda letter: True)
 def choice_city(letter):
-    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
-    if letter.data in alphabet:
-        define_data(letter.data)
-
-
-def define_data(message):
-    cities = search_file_with_cites(message)
+    cities = search_file_with_cites(letter.data)
     inline_button_choice_city = [types.InlineKeyboardButton(f'{city}') for city in cities]
     inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
-    bot.send_message(chat_id=message.chat.id, text='Выберите город и дату, чтобы посмотреть мероприятия.',
+    bot.send_message(chat_id=letter.message.chat.id, text='Выберите город и дату, чтобы посмотреть мероприятия.',
                      reply_markup=inline_markup_choice_city)
