@@ -39,15 +39,21 @@ def auth_reg(message):
         alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
         buttons = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for letter in alphabet]
         inline_button_choice_letter = types.InlineKeyboardMarkup().add(*buttons)
-        msg_choice_letter = bot.send_message(message.chat.id, 'Нажмите на начальную букву вашего города.',
-                                             reply_markup=inline_button_choice_letter)
-        bot.register_next_step_handler(msg_choice_letter, choice_city)
+        bot.send_message(message.chat.id, 'Нажмите на начальную букву вашего города.',
+                         reply_markup=inline_button_choice_letter)
 
 
 @bot.callback_query_handler(func=lambda letter: True)
 def choice_city(letter):
-    cities = search_file_with_cites(letter.data)
+    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+    for char in alphabet:
+        if letter.data == char:
+            define_data(letter.data)
+
+
+def define_data(message):
+    cities = search_file_with_cites(message)
     inline_button_choice_city = [types.InlineKeyboardButton(f'{city}') for city in cities]
     inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
-    bot.send_message(chat_id=letter.message.chat.id, text='Выберите город и дату, чтобы посмотреть мероприятия.',
+    bot.send_message(chat_id=message.chat.id, text='Выберите город и дату, чтобы посмотреть мероприятия.',
                      reply_markup=inline_markup_choice_city)
