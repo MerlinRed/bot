@@ -45,6 +45,12 @@ def writing_selected_city(message):
     years_in_calendar(message)
 
 
+def writing_date(message):
+    date = ''
+    date += message.text + ' '
+    bot.send_message(chat_id=message.chat.id, text=date)
+
+
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
@@ -62,11 +68,9 @@ def choice_city(callback):
             inline_button_choice_city = [types.InlineKeyboardButton(text=f'{city}', callback_data=f'{city}') for
                                          city in cities]
             inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
-            msg_selected_city = bot.send_message(chat_id=callback.message.chat.id,
-                                                 text='Выберите ваш город.',
-                                                 reply_markup=inline_markup_choice_city)
-            bot.register_next_step_handler(msg_selected_city, writing_selected_city)
-
+            bot.send_message(chat_id=callback.message.chat.id, text='Выберите ваш город.',
+                             reply_markup=inline_markup_choice_city)
+            writing_selected_city(callback.data)
     for year in years:
         if callback.data == year:
             months_in_calendar(callback.message)
@@ -95,6 +99,7 @@ def years_in_calendar(message):
     inline_markup_choice_year = types.InlineKeyboardMarkup().add(*inline_button_choice_year)
     bot.send_message(chat_id=message.chat.id, text='Выберите интересующий вас год',
                      reply_markup=inline_markup_choice_year)
+    writing_date(message)
 
 
 def months_in_calendar(message):
@@ -105,6 +110,7 @@ def months_in_calendar(message):
     inline_markup_choice_month = types.InlineKeyboardMarkup().add(*inline_button_choice_month)
     bot.send_message(chat_id=message.chat.id, text='Выберите интересующий вас месяц',
                      reply_markup=inline_markup_choice_month)
+    writing_date(message)
 
 
 def days_in_calendar(message):
@@ -114,3 +120,4 @@ def days_in_calendar(message):
     inline_markup_choice_day = types.InlineKeyboardMarkup().add(*inline_button_choice_day)
     bot.send_message(chat_id=message.chat.id, text='Выберите интересующий вас день',
                      reply_markup=inline_markup_choice_day)
+    writing_date(message)
