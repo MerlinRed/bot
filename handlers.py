@@ -36,6 +36,8 @@ def auth_reg(message):
         bot.send_message(message.chat.id, 'Вы вышли из аккаунта.')
     elif not check_user_authorization(user_id=message.from_user.id):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
+    elif message.text == 'calendar':
+        start(message)
     else:
         alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
         inline_button_enter_your_city = types.InlineKeyboardButton(text='Ввести свой город самостоятельно',
@@ -67,7 +69,6 @@ def choice_city(callback):
                                  reply_markup=inline_markup_choice_city)
 
 
-@bot.message_handler(commands=['calendar'])
 def start(m):
     calendar, step = DetailedTelegramCalendar().build()
     bot.send_message(m.chat.id,
