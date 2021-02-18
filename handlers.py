@@ -5,7 +5,7 @@ from authorization import authorization_email, check_user_authorization, exit_us
 from create_file_with_cities import search_file_with_cites
 from load_all import bot
 from registration import registration, check_registration_user
-from choice_date_in_calendar import calendar
+from choice_date_in_calendar import years_in_calendar
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -38,7 +38,7 @@ def auth_reg(message):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
     else:
         # choice_letter_your_city(message)
-        calendar(message)
+        years_in_calendar(message)
 
 
 def choice_letter_your_city(message):
