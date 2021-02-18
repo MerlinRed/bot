@@ -56,10 +56,6 @@ def choice_letter_your_city(message):
 def choice_city(callback):
     if callback.data == 'Ввести свой город самостоятельно':
         bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
-    elif callback.data == '2021':
-        months_in_calendar(callback.message)
-    elif callback.data == 'Январь':
-        days_in_calendar(callback.message)
     else:
         alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
         for char in alphabet:
@@ -72,6 +68,14 @@ def choice_city(callback):
                 bot.send_message(chat_id=callback.message.chat.id,
                                  text='Выберите ваш город.',
                                  reply_markup=inline_markup_choice_city)
+
+
+@bot.callback_query_handler(func=lambda callback: True)
+def calendar(callback):
+    if callback.data == '2021':
+        months_in_calendar(callback.message)
+    elif callback.data == 'Январь':
+        days_in_calendar(callback.message)
 
 
 def years_in_calendar(message):
