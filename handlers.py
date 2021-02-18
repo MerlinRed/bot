@@ -62,9 +62,8 @@ def choice_city(callback):
             inline_button_choice_city = [types.InlineKeyboardButton(text=f'{city}', callback_data=f'{city}') for
                                          city in cities]
             inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
-            msg_selected_city = bot.send_message(chat_id=callback.message.chat.id, text='Выберите ваш город.',
-                                                 reply_markup=inline_markup_choice_city)
-            bot.register_next_step_handler(msg_selected_city, writing_selected_city)
+            bot.send_message(chat_id=callback.message.chat.id, text='Выберите ваш город.',
+                             reply_markup=inline_markup_choice_city)
 
     for year in years:
         if callback.data == year:
