@@ -51,12 +51,12 @@ def choice_city(callback):
     years = ['2021', '2022', '2023', '2024']
     months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь',
               'Ноябрь', 'Декабрь']
-    for char in alphabet:
-        if callback.data == 'Ввести свой город самостоятельно':
-            msg_enter_city = bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
-            bot.register_next_step_handler(msg_enter_city, writing_selected_city)
+    if callback.data == 'Ввести свой город самостоятельно':
+        msg_enter_city = bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
+        bot.register_next_step_handler(msg_enter_city, writing_selected_city)
 
-        elif callback.data == char:
+    for char in alphabet:
+        if callback.data == char:
             letter = str(char).upper()
             cities = search_file_with_cites(letter)
             inline_button_choice_city = [types.InlineKeyboardButton(text=f'{city}', callback_data=f'{city}') for
