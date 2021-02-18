@@ -36,27 +36,23 @@ def auth_reg(message):
     elif not check_user_authorization(user_id=message.from_user.id):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
     else:
-        cities = search_file_with_cites(message)
-        inline_button_choice_city = [types.InlineKeyboardButton(f'{city}') for city in cities]
-        inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
-        bot.send_message(chat_id=message.chat.id, text='Выберите город и дату, чтобы посмотреть мероприятия.',
-                         reply_markup=inline_markup_choice_city)
+        alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+        buttons = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for letter in alphabet]
+        inline_button_choice_letter = types.InlineKeyboardMarkup().add(*buttons)
+        bot.send_message(message.chat.id, 'Нажмите на начальную букву вашего города.',
+                         reply_markup=inline_button_choice_letter)
 
-#         alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
-#         buttons = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for letter in alphabet]
-#         inline_button_choice_letter = types.InlineKeyboardMarkup().add(*buttons)
-#         bot.send_message(message.chat.id, 'Нажмите на начальную букву вашего города.',
-#                          reply_markup=inline_button_choice_letter)
-#
-#
-# @bot.callback_query_handler(func=lambda callback: True)
-# def choice_city(callback):
-#     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
-#     for char in alphabet:
-#         if callback.data == char:
-#             define_data(callback.data)
-#
-#
+
+@bot.callback_query_handler(func=lambda callback: True)
+def choice_city(callback):
+    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+    for char in alphabet:
+        if callback.data == char:
+            bot.send_message(chat_id=callback.message.chat.id, text=f'{char=}')
+        else:
+            bot.send_message(chat_id=callback.message.chat.id, text='fail')
+
+
 # def define_data(message):
 #     cities = search_file_with_cites(message)
 #     inline_button_choice_city = [types.InlineKeyboardButton(f'{city}') for city in cities]
