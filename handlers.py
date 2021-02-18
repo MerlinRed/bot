@@ -54,28 +54,30 @@ def choice_letter_your_city(message):
 
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
-    if callback.data == 'Ввести свой город самостоятельно':
-        bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
-    else:
-        alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
-        for char in alphabet:
-            if callback.data == char:
-                letter = str(char).upper()
-                cities = search_file_with_cites(letter)
-                inline_button_choice_city = [types.InlineKeyboardButton(text=f'{city}', callback_data=f'{city}') for
-                                             city in cities]
-                inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
-                bot.send_message(chat_id=callback.message.chat.id,
-                                 text='Выберите ваш город.',
-                                 reply_markup=inline_markup_choice_city)
+    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+    years = ['2021', '2022', '2023', '2024']
+    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь',
+              'Ноябрь', 'Декабрь']
 
+    for char in alphabet:
+        if callback.data == 'Ввести свой город самостоятельно':
+            bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
+        elif callback.data == char:
+            letter = str(char).upper()
+            cities = search_file_with_cites(letter)
+            inline_button_choice_city = [types.InlineKeyboardButton(text=f'{city}', callback_data=f'{city}') for
+                                         city in cities]
+            inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
+            bot.send_message(chat_id=callback.message.chat.id,
+                             text='Выберите ваш город.',
+                             reply_markup=inline_markup_choice_city)
+    for year in years:
+        if callback.data == year:
+            months_in_calendar(callback.message)
 
-@bot.callback_query_handler(func=lambda callback: True)
-def calendar(callback):
-    if callback.data == '2021':
-        months_in_calendar(callback.message)
-    elif callback.data == 'Январь':
-        days_in_calendar(callback.message)
+    for month in months:
+        if callback.data == month:
+            days_in_calendar(callback.message)
 
 
 def years_in_calendar(message):
