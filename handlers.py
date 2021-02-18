@@ -70,7 +70,7 @@ def choice_city(callback):
             inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
             bot.send_message(chat_id=callback.message.chat.id, text='Выберите ваш город.',
                              reply_markup=inline_markup_choice_city)
-            writing_selected_city(callback.data)
+            writing_selected_city(callback.message)
     for year in years:
         if callback.data == year:
             months_in_calendar(callback.message)
