@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 from telebot import types
+from telegram_bot_calendar import DetailedTelegramCalendar, LSTEP
 
 from authorization import authorization_email, check_user_authorization, exit_user_from_account
 from create_file_with_cities import search_file_with_cites
@@ -64,3 +65,25 @@ def choice_city(callback):
                 bot.send_message(chat_id=callback.message.chat.id,
                                  text='Выберите ваш город.',
                                  reply_markup=inline_markup_choice_city)
+
+
+@bot.message_handler(commands=['calendar'])
+def start(m):
+    calendar, step = DetailedTelegramCalendar().build()
+    bot.send_message(m.chat.id,
+                     f"Select {LSTEP[step]}",
+                     reply_markup=calendar)
+
+
+@bot.callback_query_handler(func=DetailedTelegramCalendar.func())
+def cal(c):
+    result, key, step = DetailedTelegramCalendar().process(c.data)
+    if not result and key:
+        bot.edit_message_text(f"Select {LSTEP[step]}",
+                              c.message.chat.id,
+                              c.message.message_id,
+                              reply_markup=key)
+    elif result:
+        bot.edit_message_text(f"You selected {result}",
+                              c.message.chat.id,
+                              c.message.message_id)
