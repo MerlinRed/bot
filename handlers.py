@@ -72,7 +72,7 @@ def choice_city(callback):
 
 
 def calendar(message):
-    years = [2021, 2022, 2023, 2024]
+    years = ['2021', '2022', '2023', '2024']
     inline_button_choice_year = [types.InlineKeyboardButton(text=f'{year}', callback_data=f'{year}') for
                                  year in years]
     inline_markup_choice_year = types.InlineKeyboardMarkup().add(*inline_button_choice_year)
@@ -82,7 +82,7 @@ def calendar(message):
 
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_date_in_calendar(callback):
-    years = [2021, 2022, 2023, 2024]
+    years = ['2021', '2022', '2023', '2024']
     months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь',
               'Ноябрь', 'Декабрь']
     for year in years:
@@ -90,7 +90,7 @@ def choice_date_in_calendar(callback):
             inline_button_choice_month = [types.InlineKeyboardButton(text=f'{month}', callback_data=f'{month}') for
                                           month in months]
             inline_markup_choice_month = types.InlineKeyboardMarkup().add(*inline_button_choice_month)
-            bot.send_message(chat_id=callback.message.chat.id, text='Выберите интересующий вас год',
+            bot.send_message(chat_id=callback.message.chat.id, text='Выберите интересующий вас месяц',
                              reply_markup=inline_markup_choice_month)
 
         elif callback.data == months:
@@ -98,5 +98,5 @@ def choice_date_in_calendar(callback):
                                          day in range(1, 30 + 1)]
 
             inline_markup_choice_days = types.InlineKeyboardMarkup().add(*inline_button_choice_days)
-            bot.send_message(chat_id=callback.message.chat.id, text='Выберите интересующий вас год',
+            bot.send_message(chat_id=callback.message.chat.id, text='Выберите интересующий вас день',
                              reply_markup=inline_markup_choice_days)
