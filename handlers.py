@@ -48,8 +48,7 @@ def choice_city(callback):
     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
     for char in alphabet:
         if callback.data == char:
-            bot.send_message(chat_id=callback.message.chat.id, text=f'{char}')
-            define_data(message=callback.message.data)
+            define_data(message=callback.data)
 
 
 def define_data(message):
