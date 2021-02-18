@@ -100,12 +100,7 @@ def days_in_calendar(message):
 
 @bot.callback_query_handler(func=lambda callback: True)
 def calendar(callback):
-    years = ['2021', '2022', '2023', '2024']
-    months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь',
-              'Ноябрь', 'Декабрь']
-    for year in years:
-        if callback.data == year:
-            months_in_calendar(callback.message)
-    for month in months:
-        if callback.data == month:
-            days_in_calendar(callback.message)
+    if callback.data == '2021':
+        months_in_calendar(callback.data)
+    elif callback.data == 'Январь':
+        days_in_calendar(callback.data)
