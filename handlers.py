@@ -36,8 +36,7 @@ def auth_reg(message):
     elif not check_user_authorization(user_id=message.from_user.id):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
     else:
-        # choice_letter_your_city(message)
-        years_in_calendar(message)
+        choice_letter_your_city(message)
 
 
 def choice_letter_your_city(message):
@@ -58,10 +57,11 @@ def choice_city(callback):
     years = ['2021', '2022', '2023', '2024']
     months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь',
               'Ноябрь', 'Декабрь']
-
+    city = None
     for char in alphabet:
         if callback.data == 'Ввести свой город самостоятельно':
             bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
+            city = callback.message.text
         elif callback.data == char:
             letter = str(char).upper()
             cities = search_file_with_cites(letter)
@@ -71,6 +71,8 @@ def choice_city(callback):
             bot.send_message(chat_id=callback.message.chat.id,
                              text='Выберите ваш город.',
                              reply_markup=inline_markup_choice_city)
+    if city:
+        years_in_calendar(callback.message)
     for year in years:
         if callback.data == year:
             months_in_calendar(callback.message)
@@ -100,7 +102,6 @@ def months_in_calendar(message):
 
 
 def days_in_calendar(message):
-    bot.send_message(chat_id=message.chat.id, text=message.text)
     days = [str(x) for x in range(1, 31 + 1)]
     inline_button_choice_day = [types.InlineKeyboardButton(text=f'{day}', callback_data=f'{day}') for
                                 day in days]
