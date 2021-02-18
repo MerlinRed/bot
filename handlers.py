@@ -39,8 +39,9 @@ def auth_reg(message):
         alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
         buttons = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for letter in alphabet]
         inline_button_choice_letter = types.InlineKeyboardMarkup().add(*buttons)
-        bot.send_message(message.chat.id, 'Нажмите на начальную букву вашего города.',
-                         reply_markup=inline_button_choice_letter)
+        msg_choice_letter = bot.send_message(message.chat.id, 'Нажмите на начальную букву вашего города.',
+                                             reply_markup=inline_button_choice_letter)
+        bot.register_next_step_handler(msg_choice_letter, choice_city)
 
 
 @bot.callback_query_handler(func=lambda letter: True)
