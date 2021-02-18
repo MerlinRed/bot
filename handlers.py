@@ -36,18 +36,21 @@ def auth_reg(message):
         bot.send_message(message.chat.id, 'Вы вышли из аккаунта.')
     elif not check_user_authorization(user_id=message.from_user.id):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
-    elif message.text == 'calendar':
-        start(message)
     else:
-        alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
-        inline_button_enter_your_city = types.InlineKeyboardButton(text='Ввести свой город самостоятельно',
-                                                                   callback_data='Ввести свой город самостоятельно')
-        inline_button_choice_letter = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for
-                                       letter in alphabet]
-        inline_markup_choice_letter = types.InlineKeyboardMarkup().add(inline_button_enter_your_city,
-                                                                       *inline_button_choice_letter)
-        bot.send_message(message.chat.id, 'Нажмите на начальную букву вашего города.',
-                         reply_markup=inline_markup_choice_letter)
+        open_calendar_choice_year(message)
+        choice_letter_your_city(message)
+
+
+def choice_letter_your_city(message):
+    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+    inline_button_enter_your_city = types.InlineKeyboardButton(text='Ввести свой город самостоятельно',
+                                                               callback_data='Ввести свой город самостоятельно')
+    inline_button_choice_letter = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for
+                                   letter in alphabet]
+    inline_markup_choice_letter = types.InlineKeyboardMarkup().add(inline_button_enter_your_city,
+                                                                   *inline_button_choice_letter)
+    bot.send_message(message.chat.id, 'Нажмите на начальную букву вашего города.',
+                     reply_markup=inline_markup_choice_letter)
 
 
 @bot.callback_query_handler(func=lambda callback: True)
@@ -69,22 +72,16 @@ def choice_city(callback):
                                  reply_markup=inline_markup_choice_city)
 
 
-def start(m):
+def open_calendar_choice_year(message):
     calendar, step = DetailedTelegramCalendar().build()
-    bot.send_message(m.chat.id,
-                     f"Select {LSTEP[step]}",
-                     reply_markup=calendar)
+    bot.send_message(message.chat.id, f"Выберите {LSTEP[step]}", reply_markup=calendar)
 
 
 @bot.callback_query_handler(func=DetailedTelegramCalendar.func())
-def cal(c):
-    result, key, step = DetailedTelegramCalendar().process(c.data)
+def choice_date_in_calendar(callback):
+    result, key, step = DetailedTelegramCalendar().process(callback.data)
     if not result and key:
-        bot.edit_message_text(f"Select {LSTEP[step]}",
-                              c.message.chat.id,
-                              c.message.message_id,
+        bot.edit_message_text(f"Select {LSTEP[step]}", callback.message.chat.id, callback.message.message_id,
                               reply_markup=key)
     elif result:
-        bot.edit_message_text(f"You selected {result}",
-                              c.message.chat.id,
-                              c.message.message_id)
+        bot.edit_message_text(f"You selected {result}", callback.message.chat.id, callback.message.message_id)
