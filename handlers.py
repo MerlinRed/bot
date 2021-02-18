@@ -48,7 +48,7 @@ def choice_city(callback):
     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
     for char in alphabet:
         if callback.data == char:
-            cities = search_file_with_cites(callback.data)
+            cities = search_file_with_cites(char)
             inline_button_choice_city = [types.InlineKeyboardButton(f'{city}') for city in cities]
             inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
             bot.send_message(chat_id=callback.message.chat.id,
