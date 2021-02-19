@@ -12,6 +12,9 @@ DAY = None
 
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
+    global YEAR
+    global MONTH
+    global DAY
     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
     years = ['2021', '2022', '2023', '2024']
     if callback.data == 'Ввести свой город самостоятельно':
@@ -28,25 +31,20 @@ def choice_city(callback):
 
     for year in years:
         if callback.data == year:
-            global YEAR
             YEAR = callback.data
             months_in_calendar(callback.message)
 
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
-        global MONTH
         MONTH = callback.data
         days_in_calendar(callback.message, 31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
-        global MONTH
         MONTH = callback.data
         days_in_calendar(callback.message, 30)
     elif callback.data == 'Февраль':
-        global MONTH
         MONTH = callback.data
         days_in_calendar(callback.message, 28)
 
     if callback.data in [str(x) for x in range(1, 31 + 1)]:
-        global DAY
         DAY = callback.data
         writing_selected_date(callback.message)
 
