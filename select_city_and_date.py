@@ -14,15 +14,8 @@ def choice_city(callback):
 
     for char in alphabet:
         if callback.data == char:
-            letter = str(char).upper()
-            cities = search_file_with_cites(letter)
-            inline_button_choice_city = [types.InlineKeyboardButton(text=f'{city}', callback_data=f'{city}') for
-                                         city in cities]
-            inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
-            bot.send_message(chat_id=callback.message.chat.id, text='Выберите ваш город.',
-                             reply_markup=inline_markup_choice_city)
-            writing_selected_city(callback.data)
-            break
+            select_name_your_city(callback.message, char)
+            bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран {callback.data} город')
 
     for year in years:
         if callback.data == year:
@@ -39,11 +32,11 @@ def choice_city(callback):
         bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран {callback.data} месяц')
         days_in_calendar(callback.message, 28)
 
-    if callback.data in range(1, 31 + 1):
+    if callback.data in [x for x in range(1, 31 + 1)]:
         bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран {callback.data} день')
 
 
-def choice_letter_your_city(message):
+def select_letter_your_city(message):
     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
     inline_button_enter_your_city = types.InlineKeyboardButton(text='Ввести свой город самостоятельно',
                                                                callback_data='Ввести свой город самостоятельно')
@@ -53,6 +46,16 @@ def choice_letter_your_city(message):
                                                                    *inline_button_choice_letter)
     bot.send_message(chat_id=message.chat.id, text='Нажмите на начальную букву вашего города.',
                      reply_markup=inline_markup_choice_letter)
+
+
+def select_name_your_city(message, char):
+    letter = str(char).upper()
+    cities = search_file_with_cites(letter)
+    inline_button_choice_city = [types.InlineKeyboardButton(text=f'{city}', callback_data=f'{city}') for
+                                 city in cities]
+    inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
+    bot.send_message(chat_id=message.chat.id, text='Выберите ваш город.',
+                     reply_markup=inline_markup_choice_city)
 
 
 def years_in_calendar(message):

@@ -4,7 +4,7 @@ from telebot import types
 from authorization import authorization_email, check_user_authorization, exit_user_from_account
 from load_all import bot
 from registration import registration, check_registration_user
-from select_city_and_date import choice_letter_your_city
+from select_city_and_date import select_letter_your_city
 
 
 @bot.message_handler(commands=['start', 'help'])
@@ -36,4 +36,4 @@ def auth_reg(message):
     elif not check_user_authorization(user_id=message.from_user.id):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
     else:
-        choice_letter_your_city(message)
+        select_letter_your_city(message)
