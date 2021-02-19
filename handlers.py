@@ -35,7 +35,7 @@ def auth_reg(message):
         bot.send_message(message.chat.id, 'Вы вышли из аккаунта.')
     elif not check_user_authorization(user_id=message.from_user.id):
         bot.send_message(chat_id=message.chat.id, text='Вы не авторизованы. Доступ к боту закрыт.')
-    elif message.text == 'афиша':
+    elif message.text.lower() == 'афиша':
         select_letter_your_city(message)
     else:
         bot.send_message(chat_id=message.chat.id, text='Введите слово "афиша", чтобы продолжить.')
