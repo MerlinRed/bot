@@ -4,9 +4,6 @@ from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
 
-CITY = None
-DATE = None
-
 
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
@@ -93,6 +90,9 @@ def days_in_calendar(message, quantity_days):
                      reply_markup=inline_markup_choice_day)
 
 
+CITY = None
+
+
 def writing_entered_city(message):
     global CITY
     CITY = message.text
@@ -107,8 +107,10 @@ def writing_selected_city(message, city):
     years_in_calendar(message)
 
 
+DATE_LIST = []
+
+
 def writing_selected_date(message, date):
-    global DATE
-    DATE = ''
-    DATE += ' ' + date
-    bot.send_message(chat_id=message.chat.id, text=f'дата {DATE}')
+    DATE_LIST.append(date)
+    define_date = '/'.join(DATE_LIST)
+    bot.send_message(chat_id=message.chat.id, text=f'дата {define_date}')
