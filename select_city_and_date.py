@@ -1,7 +1,8 @@
 from telebot import types
 
-from create_file_with_cities import search_file_with_cites
 from load_all import bot
+from manipulation_with_cities_file import look_all_cities
+from manipulation_with_cities_file import search_file_with_cites
 
 
 @bot.callback_query_handler(func=lambda callback: True)
@@ -16,26 +17,25 @@ def choice_city(callback):
         if callback.data == char:
             select_name_your_city(callback.message, char)
 
+    cities = [city for city in look_all_cities()]
+    if callback.data in cities:
+        writing_selected_city(callback.data)
+
     for year in years:
         if callback.data == year:
-            bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран {callback.data} год')
             months_in_calendar(callback.message)
 
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
-        bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран {callback.data} месяц')
         writing_selected_date(callback.data)
         days_in_calendar(callback.message, 31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
-        bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран {callback.data} месяц')
         writing_selected_date(callback.data)
         days_in_calendar(callback.message, 30)
     elif callback.data == 'Февраль':
-        bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран {callback.data} месяц')
         writing_selected_date(callback.data)
         days_in_calendar(callback.message, 28)
 
     if callback.data in [str(x) for x in range(1, 31 + 1)]:
-        bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран {callback.data} день')
         writing_selected_date(callback.data)
 
 
@@ -59,7 +59,6 @@ def select_name_your_city(message, char):
     inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
     bot.send_message(chat_id=message.chat.id, text='Выберите ваш город.',
                      reply_markup=inline_markup_choice_city)
-    bot.send_message(chat_id=message.chat.id, text=f'Выбран {message} город')
 
 
 def years_in_calendar(message):
@@ -103,6 +102,5 @@ def writing_selected_city(message):
 
 
 def writing_selected_date(message):
-    date = ''
-    date += message + '-'
+    date = message
     bot.send_message(chat_id=message.chat.id, text=f'дата {date}')

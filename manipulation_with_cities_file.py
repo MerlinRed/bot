@@ -23,5 +23,12 @@ def search_file_with_cites(letter):
                 yield city
 
 
+def look_all_cities():
+    with open('city.txt', 'r', encoding='utf-8') as cities:
+        for city in cities:
+            city = city[:-1]
+            yield city
+
+
 if __name__ == '__main__':
     create_file_with_cities()
