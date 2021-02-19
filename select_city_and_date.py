@@ -17,9 +17,9 @@ def choice_city(callback):
         if callback.data == char:
             select_name_your_city(callback.message, char)
 
-    cities = [city for city in look_all_cities()]
-    if callback.data in cities:
-        writing_selected_city(callback.data)
+    for city in [city for city in look_all_cities()]:
+        if callback.data == city:
+            writing_selected_city(callback.data)
 
     for year in years:
         if callback.data == year:
@@ -96,11 +96,11 @@ def writing_entered_city(message):
 
 
 def writing_selected_city(message):
-    city = message
+    city = message.text
     bot.send_message(chat_id=message.chat.id, text=f'Вы выбрали город - {city}')
     years_in_calendar(message)
 
 
 def writing_selected_date(message):
-    date = message
+    date = message.text
     bot.send_message(chat_id=message.chat.id, text=f'дата {date}')
