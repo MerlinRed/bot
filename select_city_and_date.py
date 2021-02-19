@@ -114,5 +114,5 @@ def writing_selected_city(message, city):
 
 
 def writing_selected_date(message):
-    date = YEAR + '/' + MONTH + '/' + DAY
+    date = YEAR + '-' + MONTH + '-' + DAY
     bot.send_message(chat_id=message.chat.id, text=f'дата {date}')
