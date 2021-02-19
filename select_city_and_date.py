@@ -21,6 +21,8 @@ def choice_city(callback):
         if callback.data == city:
             # writing_selected_city(callback.data)
             bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран город {callback.data}')
+            bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран город {callback.message}')
+            bot.send_message(chat_id=callback.message.chat.id, text=f'Выбран город {callback}')
 
     for year in years:
         if callback.data == year:
