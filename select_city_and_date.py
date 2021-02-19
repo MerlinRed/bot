@@ -4,6 +4,11 @@ from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
 
+CITY = None
+YEAR = None
+MONTH = None
+DAY = None
+
 
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
@@ -23,21 +28,27 @@ def choice_city(callback):
 
     for year in years:
         if callback.data == year:
-            writing_selected_date(callback.message, callback.data)
+            global YEAR
+            YEAR = callback.data
             months_in_calendar(callback.message)
 
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
-        writing_selected_date(callback.message, callback.data)
+        global MONTH
+        MONTH = callback.data
         days_in_calendar(callback.message, 31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
-        writing_selected_date(callback.message, callback.data)
+        global MONTH
+        MONTH = callback.data
         days_in_calendar(callback.message, 30)
     elif callback.data == 'Февраль':
-        writing_selected_date(callback.message, callback.data)
+        global MONTH
+        MONTH = callback.data
         days_in_calendar(callback.message, 28)
 
     if callback.data in [str(x) for x in range(1, 31 + 1)]:
-        writing_selected_date(callback.message, callback.data)
+        global DAY
+        DAY = callback.data
+        writing_selected_date(callback.message)
 
 
 def select_letter_your_city(message):
@@ -90,9 +101,6 @@ def days_in_calendar(message, quantity_days):
                      reply_markup=inline_markup_choice_day)
 
 
-CITY = None
-
-
 def writing_entered_city(message):
     global CITY
     CITY = message.text
@@ -107,10 +115,6 @@ def writing_selected_city(message, city):
     years_in_calendar(message)
 
 
-DATE_LIST = []
-
-
-def writing_selected_date(message, date):
-    DATE_LIST.append(date)
-    define_date = '/'.join(DATE_LIST)
-    bot.send_message(chat_id=message.chat.id, text=f'дата {define_date}')
+def writing_selected_date(message):
+    date = YEAR + '/' + MONTH + '/' + DAY
+    bot.send_message(chat_id=message.chat.id, text=f'дата {date}')
