@@ -5,7 +5,7 @@ from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
 
 CITY = None
-DATE = None
+DATE = ''
 
 
 @bot.callback_query_handler(func=lambda callback: True)
