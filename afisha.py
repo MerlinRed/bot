@@ -2,15 +2,15 @@ import html
 import json
 
 import lxml.html
-import pytils.translit
 import requests
 from bs4 import BeautifulSoup
 
 from load_all import bot
+from transliteration import transliteration_for_city
 
 
 def take_and_translate_city_for_search(city):
-    city_in_english = pytils.translit.translify(city.lower())
+    city_in_english = transliteration_for_city(city)
     return city_in_english
 
 
@@ -46,7 +46,7 @@ def found_concert_events(message, city, date):
 
     except AttributeError:
         bot.send_message(chat_id=message.chat.id,
-                         text='Ничего не найдено.\nВозможно, нужно ввести ваш город английскими буквами самостоятельно.')
+                         text='Ничего не найдено.')
 
 
 def found_exhibition_events(message, city, date):
@@ -72,7 +72,7 @@ def found_exhibition_events(message, city, date):
 
     except AttributeError:
         bot.send_message(chat_id=message.chat.id,
-                         text='Ничего не найдено.\nВозможно, нужно ввести ваш город английскими буквами самостоятельно.')
+                         text='Ничего не найдено.')
 
 
 def found_performance_events(message, city, date):
@@ -99,4 +99,4 @@ def found_performance_events(message, city, date):
 
     except AttributeError:
         bot.send_message(chat_id=message.chat.id,
-                         text='Ничего не найдено.\nВозможно, нужно ввести ваш город английскими буквами самостоятельно.')
+                         text='Ничего не найдено.')
