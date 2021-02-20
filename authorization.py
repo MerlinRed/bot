@@ -23,7 +23,7 @@ def authorization(message):
 
 
 def authorization_email(message):
-    pattern = re.compile('[\w.-]+@[\w.-]+\.?[\w]+?')
+    pattern = re.compile('^[a-zA-Z0-9]+([\.-]?[a-zA-Z0-9]+)*@[a-zA-Z]+([\.-]?[a-zA-Z]+)*(\.[a-zA-Z]{2,3})+$')
     bot.send_message(chat_id=message.chat.id, text='Проверка адреса почты.')
     email = message.text
 

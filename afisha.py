@@ -45,4 +45,57 @@ def found_concert_events(message, city, date):
                              text=f'название - {event[0]}\nадрес - {event[1]}\nначало в - {event[2]}')
 
     except AttributeError:
-        bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')
+        bot.send_message(chat_id=message.chat.id,
+                         text='Ничего не найдено.\nВозможно, нужно ввести ваш город английскими буквами самостоятельно.')
+
+
+def found_exhibition_events(message, city, date):
+    try:
+
+        lst_events = []
+        response = requests.get(
+            f'https://www.culture.ru/afisha/{city}/vistavki?seanceStartDate={date}&seanceEndDate={date}')
+        events = BeautifulSoup(response.content, 'html.parser').find('div',
+                                                                     class_='entity-cards grid-1-noSpaceTop_notebook-4_tablet-medium-3_mobile-large-2')
+        for event in events.find_all('script'):
+            data = lxml.html.fromstring(str(event))
+            js = json.loads(html.unescape(data.xpath('//script[@type="application/ld+json"]/text()')[0]))
+            name_event = js['name']
+            # print(js['location']['name'])
+            location_event = js['location']['address']
+            for time in events.find_all('div', {'class': 'tile-date_time'}):
+                lst_events.append((name_event, location_event, time.get_text()))
+        lst_events.sort(key=lambda x: x[2])
+        for event in lst_events:
+            bot.send_message(chat_id=message.chat.id,
+                             text=f'название - {event[0]}\nадрес - {event[1]}\nначало в - {event[2]}')
+
+    except AttributeError:
+        bot.send_message(chat_id=message.chat.id,
+                         text='Ничего не найдено.\nВозможно, нужно ввести ваш город английскими буквами самостоятельно.')
+
+
+def found_performance_events(message, city, date):
+    try:
+
+        lst_events = []
+        response = requests.get(
+            f'https://www.culture.ru/afisha/{city}/spektakli?seanceStartDate={date}&seanceEndDate={date}')
+        events = BeautifulSoup(response.content, 'html.parser').find('div',
+                                                                     class_='entity-cards grid-1-noSpaceTop_notebook-4_tablet-medium-3_mobile-large-2')
+        for event in events.find_all('script'):
+            data = lxml.html.fromstring(str(event))
+            js = json.loads(html.unescape(data.xpath('//script[@type="application/ld+json"]/text()')[0]))
+            name_event = js['name']
+            # print(js['location']['name'])
+            location_event = js['location']['address']
+            for time in events.find_all('div', {'class': 'tile-date_time'}):
+                lst_events.append((name_event, location_event, time.get_text()))
+        lst_events.sort(key=lambda x: x[2])
+        for event in lst_events:
+            bot.send_message(chat_id=message.chat.id,
+                             text=f'название - {event[0]}\nадрес - {event[1]}\nначало в - {event[2]}')
+
+    except AttributeError:
+        bot.send_message(chat_id=message.chat.id,
+                         text='Ничего не найдено.\nВозможно, нужно ввести ваш город английскими буквами самостоятельно.')

@@ -1,6 +1,7 @@
 from telebot import types
 
-from afisha import take_and_translate_city_for_search, found_concert_events, transform_date
+from afisha import take_and_translate_city_for_search, found_concert_events, transform_date, found_performance_events
+from afisha import found_exhibition_events
 from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
@@ -9,6 +10,7 @@ CITY = None
 YEAR = None
 MONTH = None
 DAY = None
+DATE = None
 
 
 @bot.callback_query_handler(func=lambda callback: True)
@@ -45,9 +47,18 @@ def choice_city(callback):
         MONTH = callback.data
         days_in_calendar(message=callback.message, quantity_days=28)
 
-    if callback.data in [str(x) for x in range(1, 31 + 1)]:
+    if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:
         DAY = callback.data
         writing_selected_date(message=callback.message)
+
+    if callback.data == 'Концерты':
+        found_concert_events(message=callback.message, city=CITY, date=DATE)
+
+    elif callback.data == 'Спектакли':
+        found_performance_events(message=callback.message, city=CITY, date=DATE)
+
+    elif callback.data == 'Выставки':
+        found_exhibition_events(message=callback.message, city=CITY, date=DATE)
 
 
 def select_letter_your_city(message):
@@ -92,12 +103,22 @@ def months_in_calendar(message):
 
 
 def days_in_calendar(message, quantity_days):
-    days = [str(x) for x in range(1, quantity_days + 1)]
+    days = ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, quantity_days + 1)]
     inline_button_choice_day = [types.InlineKeyboardButton(text=f'{day}', callback_data=f'{day}') for
                                 day in days]
     inline_markup_choice_day = types.InlineKeyboardMarkup().add(*inline_button_choice_day)
     bot.send_message(chat_id=message.chat.id, text='Выберите интересующий вас день',
                      reply_markup=inline_markup_choice_day)
+
+
+def difference_events(message):
+    inline_button_concert = types.InlineKeyboardButton(text=f'Концерты', callback_data=f'Концерты')
+    inline_button_performance = types.InlineKeyboardButton(text=f'Спектакли', callback_data=f'Спектакли')
+    inline_button_exhibition = types.InlineKeyboardButton(text=f'Выставки', callback_data=f'Выставки')
+    inline_markup_choice_event = types.InlineKeyboardMarkup().add(inline_button_concert, inline_button_performance,
+                                                                  inline_button_exhibition)
+    bot.send_message(chat_id=message.chat.id, text='Выберите интересующее вас мероприятие',
+                     reply_markup=inline_markup_choice_event)
 
 
 def writing_entered_city(message):
@@ -117,7 +138,8 @@ def writing_selected_city(message, city):
 
 
 def writing_selected_date(message):
+    global DATE
     month = transform_date(month=MONTH)
-    date = YEAR + '-' + month + '-' + DAY
-    bot.send_message(chat_id=message.chat.id, text=f'дата - {date}')
-    found_concert_events(message=message, city=CITY, date=date)
+    DATE = YEAR + '-' + month + '-' + DAY
+    bot.send_message(chat_id=message.chat.id, text=f'дата - {DATE}')
+    difference_events(message)
