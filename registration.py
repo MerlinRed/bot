@@ -3,7 +3,7 @@ import logging
 import re
 
 from create_password import create_password
-from load_all import bot
+from handlers import bot
 from message_to_email import send_password_to_email
 from work_with_db import insert_user_in_db, select_user_account
 
