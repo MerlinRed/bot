@@ -1,5 +1,5 @@
 from telebot import types
-from select_city_and_date import bot
+from load_all import bot
 from manipulation_with_cities_file import search_file_with_cites
 
 
