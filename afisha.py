@@ -2,17 +2,15 @@ import html
 import json
 
 import lxml.html
+import pytils.translit
 import requests
 from bs4 import BeautifulSoup
-from googletrans import Translator
 
 from load_all import bot
 
 
 def take_and_translate_city_for_search(city):
-    translator = Translator()
-    translate_city = translator.translate(city, src='ru', dest='en')
-    city_in_english = translate_city.text.lower()
+    city_in_english = pytils.translit.translify(city.lower())
     return city_in_english
 
 
