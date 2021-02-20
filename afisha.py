@@ -1,10 +1,12 @@
 import html
 import json
-from load_all import bot
+
 import lxml.html
 import requests
 from bs4 import BeautifulSoup
 from googletrans import Translator
+
+from load_all import bot
 
 
 def take_and_translate_city_for_search(city):
@@ -12,6 +14,15 @@ def take_and_translate_city_for_search(city):
     translate_city = translator.translate(city, src='ru', dest='en')
     city_in_english = translate_city.text.lower()
     return city_in_english
+
+
+def transform_date(month):
+    months_in_numbers = dict(Январь='01', Февраль='02', Март='03', Апрель='04', Май='05', Июнь='06', Июль='07',
+                             Август='08', Сентябрь='09',
+                             Октябрь='10', Ноябрь='11', Декабрь='12')
+    for key, value in months_in_numbers.items():
+        if month == key:
+            return value
 
 
 def found_concert_events(message, city, date):
