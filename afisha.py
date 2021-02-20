@@ -39,8 +39,8 @@ def found_concert_events(message, city, date):
             location_event = js['location']['address']
             for time in events.find_all('div', {'class': 'tile-date_time'}):
                 lst_events.append((name_event, location_event, time.get_text()))
-        lst_events.sort(key=lambda x: x[2])
-        for event in lst_events:
+        sort_events = sorted(set(lst_events), key=lambda x: x[2])
+        for event in sort_events:
             bot.send_message(chat_id=message.chat.id,
                              text=f'название - {event[0]}\nадрес - {event[1]}\nначало в - {event[2]}')
 
@@ -65,8 +65,8 @@ def found_exhibition_events(message, city, date):
             location_event = js['location']['address']
             for time in events.find_all('div', {'class': 'tile-date_time'}):
                 lst_events.append((name_event, location_event, time.get_text()))
-        lst_events.sort(key=lambda x: x[2])
-        for event in lst_events:
+        sort_events = sorted(set(lst_events), key=lambda x: x[2])
+        for event in sort_events:
             bot.send_message(chat_id=message.chat.id,
                              text=f'название - {event[0]}\nадрес - {event[1]}\nначало в - {event[2]}')
 
@@ -91,8 +91,9 @@ def found_performance_events(message, city, date):
             location_event = js['location']['address']
             for time in events.find_all('div', {'class': 'tile-date_time'}):
                 lst_events.append((name_event, location_event, time.get_text()))
-        lst_events.sort(key=lambda x: x[2])
-        for event in lst_events:
+
+        sort_events = sorted(set(lst_events), key=lambda x: x[2])
+        for event in sort_events:
             bot.send_message(chat_id=message.chat.id,
                              text=f'название - {event[0]}\nадрес - {event[1]}\nначало в - {event[2]}')
 
