@@ -37,4 +37,4 @@ def registration(message):
 
 
 def check_registration_user(user_id):
-    return True if select_user_account(user_id) else False
+    return True if select_user_account(user_id=user_id) else False

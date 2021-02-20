@@ -2,9 +2,9 @@
 from telebot import types
 
 from authorization import authorization_email, check_user_authorization, exit_user_from_account
+from inline_buttons import select_letter_your_city
 from load_all import bot
 from registration import registration, check_registration_user
-from select_city_and_date import select_letter_your_city
 
 
 @bot.message_handler(commands=['start', 'help'])

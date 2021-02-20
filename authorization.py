@@ -12,7 +12,7 @@ PASSWORD = None
 
 def authorization(message):
     if select_user_from_db(user_id=message.from_user.id, email=EMAIL, password=PASSWORD):
-        if not check_email_authorization(message.from_user.id):
+        if not check_email_authorization(user_id=message.from_user.id):
             bot.send_message(chat_id=message.chat.id,
                              text='Вы не можете пользоваться ботом пока не подтвердите свою почту.')
             return
@@ -36,7 +36,7 @@ def authorization_email(message):
     if is_valid_email:
         global EMAIL
         EMAIL = email
-        msg_password = bot.send_message(message.chat.id, 'Введите пароль для авторизации.')
+        msg_password = bot.send_message(chat_id=message.chat.id, text='Введите пароль для авторизации.')
         bot.register_next_step_handler(msg_password, authorization_email_password)
     else:
         bot.send_message(chat_id=message.chat.id, text='Вы ввели некорректный адрес почты.')
@@ -46,7 +46,7 @@ def authorization_email_password(message):
     password = message.text
     global PASSWORD
     PASSWORD = password
-    authorization(message)
+    authorization(message=message)
 
 
 def check_email_authorization(user_id):
