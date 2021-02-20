@@ -31,8 +31,8 @@ def transliteration_for_city(city):
         'ы': 'y',
         'ь': '',
         'э': 'e',
-        'ю': 'u',
-        'я': 'ja'}
+        'ю': 'yu',
+        'я': 'ya'}
 
     translit_city = city.lower()
     for key in transliteration_letters:
