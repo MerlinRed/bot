@@ -1,6 +1,6 @@
 from telebot import types
 
-from afisha import take_and_translate_city_for_search, found_events
+from afisha import take_and_translate_city_for_search, found_concert_events
 from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
@@ -118,6 +118,7 @@ def writing_selected_city(message, city):
 
 def writing_selected_date(message):
     date = YEAR + '-' + MONTH + '-' + DAY
-    found_events(city=CITY, date=date)
+    bot.send_message(chat_id=message.chat.id, text=f'дата - {date}')
+    found_concert_events(message=message, city=CITY, date=date)
 
     bot.send_message(chat_id=message.chat.id, text=f'дата {date}')

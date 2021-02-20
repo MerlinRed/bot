@@ -1,6 +1,6 @@
 import html
 import json
-
+from load_all import bot
 import lxml.html
 import requests
 from bs4 import BeautifulSoup
@@ -14,7 +14,7 @@ def take_and_translate_city_for_search(city):
     return city_in_english
 
 
-def found_events(city, date):
+def found_concert_events(message, city, date):
     lst_events = []
     response = requests.get(
         f'https://www.culture.ru/afisha/{city}/kontserti?seanceStartDate={date}&seanceEndDate={date}')
@@ -28,4 +28,4 @@ def found_events(city, date):
         location_event = js['location']['address']
         for time in events.find_all('div', {'class': 'tile-date_time'}):
             lst_events.append((name_event, location_event, time.get_text()))
-    return lst_events
+    bot.send_message(chat_id=message.chat.id, text=lst_events)
