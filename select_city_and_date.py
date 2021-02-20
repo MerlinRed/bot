@@ -1,6 +1,6 @@
 from afisha import found_exhibition_events
 from afisha import take_and_translate_city_for_search, found_concert_events, transform_date, found_performance_events
-from handlers import bot
+from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from inline_buttons import select_name_your_city, years_in_calendar, months_in_calendar, days_in_calendar
 from inline_buttons import difference_events
