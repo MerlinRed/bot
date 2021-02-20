@@ -1,7 +1,6 @@
 from telebot import types
 
-from afisha import found_exhibition_events
-from afisha import take_and_translate_city_for_search, found_concert_events, transform_date, found_performance_events
+from afisha import take_and_translate_city_for_search, transform_date, select_event
 from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
@@ -52,13 +51,13 @@ def choice_city(callback):
         writing_selected_date(message=callback.message)
 
     if callback.data == 'Концерты':
-        found_concert_events(message=callback.message, city=CITY, date=DATE)
+        select_event(message=callback.message, city=CITY, date=DATE, concert=True)
 
     elif callback.data == 'Спектакли':
-        found_performance_events(message=callback.message, city=CITY, date=DATE)
+        select_event(message=callback.message, city=CITY, date=DATE, performance=True)
 
     elif callback.data == 'Выставки':
-        found_exhibition_events(message=callback.message, city=CITY, date=DATE)
+        select_event(message=callback.message, city=CITY, date=DATE, exhibition=True)
 
 
 def select_letter_your_city(message):
@@ -70,8 +69,7 @@ def select_letter_your_city(message):
     inline_markup_choice_letter = types.InlineKeyboardMarkup().add(inline_button_enter_your_city,
                                                                    *inline_button_choice_letter)
     bot.send_message(chat_id=message.chat.id,
-                     text='Нажмите на начальную букву вашего города.\n' \
-                          'Если ничего не нашлось,' \
+                     text='Нажмите на начальную букву вашего города.\nЕсли ничего не нашлось,' \
                           ' попробуйте самостоятельно ввести название вашего города по русски английскими буквами.',
                      reply_markup=inline_markup_choice_letter)
 
