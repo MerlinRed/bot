@@ -22,7 +22,7 @@ def transliteration_for_city(city):
         'т': 't',
         'у': 'u',
         'ф': 'f',
-        'х': 'kh',
+        'х': 'h',
         'ц': 'c',
         'ч': 'ch',
         'ш': 'sh',

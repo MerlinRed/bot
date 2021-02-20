@@ -69,7 +69,10 @@ def select_letter_your_city(message):
                                    letter in alphabet]
     inline_markup_choice_letter = types.InlineKeyboardMarkup().add(inline_button_enter_your_city,
                                                                    *inline_button_choice_letter)
-    bot.send_message(chat_id=message.chat.id, text='Нажмите на начальную букву вашего города.',
+    bot.send_message(chat_id=message.chat.id,
+                     text='Нажмите на начальную букву вашего города.\n' \
+                          'Если ничего не нашлось,' \
+                          ' попробуйте самостоятельно ввести название вашего города по русски английскими буквами.',
                      reply_markup=inline_markup_choice_letter)
 
 
