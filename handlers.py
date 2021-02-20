@@ -11,7 +11,7 @@ from registration import registration, check_registration_user
 def start_chat(message):
     keyboard_start_msg = types.ReplyKeyboardMarkup(True, True)
     keyboard_start_msg.row('Авторизоваться', 'Зарегистрироваться', 'Выйти из аккаунта')
-    text = 'Бот предоставляет информации о событиях в вашем городе.\n\n' \
+    text = 'Бот предоставляет информации о событиях в вашем городе. Чтобы ее получить, напишите слово "афиша".\n\n' \
            'Для продолжения взаимодействий с ботом необходимо зарегистрироваться и авторизоваться.\n\n' \
            'Если вы уже зарегистрированы, необходимо только авторизоваться.'
     bot.send_message(chat_id=message.chat.id, text=text, reply_markup=keyboard_start_msg)
