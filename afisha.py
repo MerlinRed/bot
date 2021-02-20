@@ -26,17 +26,24 @@ def transform_date(month):
 
 
 def found_concert_events(message, city, date):
-    lst_events = []
-    response = requests.get(
-        f'https://www.culture.ru/afisha/{city}/kontserti?seanceStartDate={date}&seanceEndDate={date}')
-    events = BeautifulSoup(response.content, 'html.parser').find('div',
-                                                                 class_='entity-cards grid-1-noSpaceTop_notebook-4_tablet-medium-3_mobile-large-2')
-    for event in events.find_all('script'):
-        data = lxml.html.fromstring(str(event))
-        js = json.loads(html.unescape(data.xpath('//script[@type="application/ld+json"]/text()')[0]))
-        name_event = js['name']
-        # print(js['location']['name'])
-        location_event = js['location']['address']
-        for time in events.find_all('div', {'class': 'tile-date_time'}):
-            lst_events.append((name_event, location_event, time.get_text()))
-    bot.send_message(chat_id=message.chat.id, text=lst_events)
+    try:
+
+        lst_events = []
+        response = requests.get(
+            f'https://www.culture.ru/afisha/{city}/kontserti?seanceStartDate={date}&seanceEndDate={date}')
+        events = BeautifulSoup(response.content, 'html.parser').find('div',
+                                                                     class_='entity-cards grid-1-noSpaceTop_notebook-4_tablet-medium-3_mobile-large-2')
+        for event in events.find_all('script'):
+            data = lxml.html.fromstring(str(event))
+            js = json.loads(html.unescape(data.xpath('//script[@type="application/ld+json"]/text()')[0]))
+            name_event = js['name']
+            # print(js['location']['name'])
+            location_event = js['location']['address']
+            for time in events.find_all('div', {'class': 'tile-date_time'}):
+                lst_events.append((name_event, location_event, time.get_text()))
+        for event in lst_events:
+            bot.send_message(chat_id=message.chat.id,
+                             text=f'название - {event[0]}\nадрес - {event[1]}\nначало в - {event[2]}')
+
+    except AttributeError:
+        bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')

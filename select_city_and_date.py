@@ -117,7 +117,7 @@ def writing_selected_city(message, city):
 
 
 def writing_selected_date(message):
-    month = transform_date(MONTH)
+    month = transform_date(month=MONTH)
     date = YEAR + '-' + month + '-' + DAY
     bot.send_message(chat_id=message.chat.id, text=f'дата - {date}')
     found_concert_events(message=message, city=CITY, date=date)
