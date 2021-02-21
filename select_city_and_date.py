@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from telebot import types
 
-from afisha import take_and_translate_city_for_search, transform_date, select_event
+from afisha import take_and_translate_city_for_search, transform_month, select_event, search_cinema, declension_month
 from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
@@ -42,13 +42,13 @@ def choice_city(callback):
             months_in_calendar(message=callback.message)
 
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
-        Date.month = transform_date(month=callback.data)
+        Date.month = transform_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
-        Date.month = transform_date(month=callback.data)
+        Date.month = transform_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=30)
     elif callback.data == 'Февраль':
-        Date.month = transform_date(month=callback.data)
+        Date.month = transform_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=28)
 
     if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:
@@ -66,6 +66,10 @@ def choice_city(callback):
     elif callback.data == 'Выставки':
         select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month}-{Date.day}',
                      exhibition=True)
+    elif callback.data == 'Кино':
+        special_month = declension_month(month=Date.month)
+        special_date = f'{Date.day}-{special_month}'
+        search_cinema(message=callback.message, city=City.city, day_month=special_date)
 
 
 def select_letter_your_city(message):
@@ -93,7 +97,7 @@ def select_name_your_city(message, char):
 
 
 def years_in_calendar(message):
-    years = ['2021', '2022', '2023', '2024']
+    years = ['2021', '2022']
     inline_button_choice_year = [types.InlineKeyboardButton(text=f'{year}', callback_data=f'{year}') for
                                  year in years]
     inline_markup_choice_year = types.InlineKeyboardMarkup().add(*inline_button_choice_year)
@@ -122,9 +126,11 @@ def days_in_calendar(message, quantity_days):
 
 def difference_events(message):
     inline_button_concert = types.InlineKeyboardButton(text=f'Концерты', callback_data=f'Концерты')
+    inline_button_cinema = types.InlineKeyboardButton(text=f'Кино', callback_data=f'Кино')
     inline_button_performance = types.InlineKeyboardButton(text=f'Спектакли', callback_data=f'Спектакли')
     inline_button_exhibition = types.InlineKeyboardButton(text=f'Выставки', callback_data=f'Выставки')
-    inline_markup_choice_event = types.InlineKeyboardMarkup().add(inline_button_concert, inline_button_performance,
+    inline_markup_choice_event = types.InlineKeyboardMarkup().add(inline_button_concert, inline_button_cinema,
+                                                                  inline_button_performance,
                                                                   inline_button_exhibition)
     bot.send_message(chat_id=message.chat.id, text='Выберите интересующее вас мероприятие',
                      reply_markup=inline_markup_choice_event)

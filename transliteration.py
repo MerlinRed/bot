@@ -1,4 +1,4 @@
-def transliteration_for_city(city):
+def transliteration_data(city):
     transliteration_letters = {
         'а': 'a',
         'б': 'b',
