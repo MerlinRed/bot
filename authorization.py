@@ -1,17 +1,25 @@
 #!/usr/bin/python3
 import logging
 import re
+from dataclasses import dataclass
 
 from load_all import bot
 from work_with_db import select_user_from_db, select_active_from_db, update_user_authorization, select_auth_user
 from work_with_db import update_exit_user_from_account
 
-EMAIL = None
-PASSWORD = None
+
+@dataclass
+class Email:
+    email: str
+
+
+@dataclass
+class Password:
+    password: str
 
 
 def authorization(message):
-    if select_user_from_db(user_id=message.from_user.id, email=EMAIL, password=PASSWORD):
+    if select_user_from_db(user_id=message.from_user.id, email=Email.email, password=Password.password):
         if not check_email_authorization(user_id=message.from_user.id):
             bot.send_message(chat_id=message.chat.id,
                              text='Вы не можете пользоваться ботом пока не подтвердите свою почту.')
@@ -34,8 +42,7 @@ def authorization_email(message):
     is_valid = pattern.match(email)
     is_valid_email = is_valid.group() if is_valid else False
     if is_valid_email:
-        global EMAIL
-        EMAIL = email
+        Email.email = email
         msg_password = bot.send_message(chat_id=message.chat.id, text='Введите пароль для авторизации.')
         bot.register_next_step_handler(msg_password, authorization_email_password)
     else:
@@ -44,8 +51,7 @@ def authorization_email(message):
 
 def authorization_email_password(message):
     password = message.text
-    global PASSWORD
-    PASSWORD = password
+    Password.password = password
     authorization(message=message)
 
 
