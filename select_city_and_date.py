@@ -20,11 +20,6 @@ class Date:
     day: str
 
 
-@dataclass
-class SpecialDateForCinema:
-    date: str
-
-
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
     alphabet = 'АБВГДЕЖЗИКЛМНОПРСТУФХЧШЭЮЯ'
@@ -71,11 +66,10 @@ def choice_city(callback):
     elif callback.data == 'Выставки':
         select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month}-{Date.day}',
                      exhibition=True)
+
     elif callback.data == 'Кино':
-        SpecialDateForCinema.date = Date.month
-        special_month = declension_month(month=SpecialDateForCinema.date)
-        special_date = f'{Date.day}-{special_month}'
-        search_cinema(message=callback.message, city=City.city, day_month=special_date)
+        special_month = declension_month(month=Date.month)
+        search_cinema(message=callback.message, city=City.city, day_month=f'{Date.day}-{special_month}')
 
 
 def select_letter_your_city(message):
