@@ -12,25 +12,18 @@ from manipulation_with_cities_file import search_file_with_cites
 class City:
     city: str
 
-    @staticmethod
-    def user_city():
-        print(City.city)
-
 
 @dataclass
 class Date:
-    year: str
-    month: str
-    day: str
-
-    @staticmethod
-    def date():
-        print(f'{Date.year}-{Date.month}-{Date.day}')
+    year: str = ''
+    month: str = ''
+    day: str = ''
+    date: str = f'{year}-{month}-{day}'
 
 
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
-    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+    alphabet = 'АБВГДЕЖЗИКЛМНОПРСТУФХЧШЭЮЯ'
     years = ['2021', '2022', '2023', '2024']
     if callback.data == 'Ввести свой город самостоятельно':
         msg_entered_city = bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
@@ -61,18 +54,18 @@ def choice_city(callback):
 
     if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:
         Date.day = callback.data
-        bot.send_message(chat_id=callback.message.chat.id, text=f'дата {Date.date()}')
+        bot.send_message(chat_id=callback.message.chat.id, text=f'дата {Date.date}')
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
-        bot.send_message(chat_id=callback.message.chat.id, text=f'город {City.user_city()}\nдата {Date.date()}')
-        select_event(message=callback.message, city=City.user_city(), date=Date.date(), concert=True)
+        bot.send_message(chat_id=callback.message.chat.id, text=f'город {City.city}\nдата {Date.date}')
+        select_event(message=callback.message, city=City.city, date=Date.date, concert=True)
 
     elif callback.data == 'Спектакли':
-        select_event(message=callback.message, city=City.user_city(), date=Date.date(), performance=True)
+        select_event(message=callback.message, city=City.city, date=Date.date, performance=True)
 
     elif callback.data == 'Выставки':
-        select_event(message=callback.message, city=City.user_city(), date=Date.date(), exhibition=True)
+        select_event(message=callback.message, city=City.city, date=Date.date, exhibition=True)
 
 
 def select_letter_your_city(message):
@@ -84,8 +77,8 @@ def select_letter_your_city(message):
     inline_markup_choice_letter = types.InlineKeyboardMarkup().add(inline_button_enter_your_city,
                                                                    *inline_button_choice_letter)
     bot.send_message(chat_id=message.chat.id,
-                     text='Нажмите на начальную букву вашего города.\nЕсли ничего не нашлось,' \
-                          ' попробуйте самостоятельно ввести название вашего города по русски английскими буквами.',
+                     text='Нажмите на начальную букву вашего города.' \
+                          '\nЕсли вашего города нет в списке, введите его самостоятельно.',
                      reply_markup=inline_markup_choice_letter)
 
 
