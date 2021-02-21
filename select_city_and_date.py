@@ -53,12 +53,9 @@ def choice_city(callback):
 
     if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:
         Date.day = callback.data
-        bot.send_message(chat_id=callback.message.chat.id, text=f'дата {Date.year}-{Date.month}-{Date.day}')
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
-        bot.send_message(chat_id=callback.message.chat.id,
-                         text=f'город {City.city}\nдата {Date.year}-{Date.month}-{Date.day}')
         select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month}-{Date.day}',
                      concert=True)
 
@@ -135,11 +132,9 @@ def difference_events(message):
 
 def writing_entered_city(message):
     City.city = take_and_translate_city_for_search(city=message.text)
-    bot.send_message(chat_id=message.chat.id, text=f'Вы ввели город - {City.city}')
     years_in_calendar(message=message)
 
 
 def writing_selected_city(message, city):
     City.city = take_and_translate_city_for_search(city=city)
-    bot.send_message(chat_id=message.chat.id, text=f'Вы выбрали город - {City.city}')
     years_in_calendar(message=message)
