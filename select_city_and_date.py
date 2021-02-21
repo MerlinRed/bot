@@ -73,7 +73,7 @@ def choice_city(callback):
 
     elif callback.data == 'Кино':
         special_month = declension_month(month=Date.month)
-        bot.send_message(chat_id=callback.message.chat.id, text=f'{City.city}, {Date.day}-{special_month}')
+        bot.send_message(chat_id=callback.message.chat.id, text=f'На {Date.day} {Date.month} есть следующие фильмы:')
         search_cinema(message=callback.message, city=City.city, day_month=f'{Date.day}-{special_month}')
 
 
