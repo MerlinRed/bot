@@ -11,7 +11,7 @@ from transliteration import transliteration_data
 
 
 def take_and_translate_city_for_search(city):
-    city_in_english = transliteration_data(city)
+    city_in_english = transliteration_data(data=city)
     return city_in_english
 
 
@@ -28,7 +28,8 @@ def declension_month(month):
     morph = pymorphy2.MorphAnalyzer()
     declension = morph.parse(f'{month}')[0]
     declension_genitive = declension.inflect({'gent'})
-    return declension_genitive.word
+    transliteration_month = transliteration_data(data=declension_genitive.word)
+    return transliteration_month
 
 
 def select_event(message, city, date, concert=False, exhibition=False, performance=False):

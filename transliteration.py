@@ -1,4 +1,4 @@
-def transliteration_data(city):
+def transliteration_data(data):
     transliteration_letters = {
         'а': 'a',
         'б': 'b',
@@ -34,7 +34,7 @@ def transliteration_data(city):
         'ю': 'yu',
         'я': 'ya'}
 
-    translit_city = city.lower()
+    translit_data = data.lower()
     for key in transliteration_letters:
-        translit_city = translit_city.replace(key, transliteration_letters[key])
-    return translit_city.lower()
+        translit_data = translit_data.replace(key, transliteration_letters[key])
+    return translit_data.lower()
