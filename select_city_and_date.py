@@ -5,7 +5,6 @@ from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
 
-CITY = None
 YEAR = None
 MONTH = None
 DAY = None
@@ -17,11 +16,12 @@ def choice_city(callback):
     global YEAR
     global MONTH
     global DAY
+    user_city = None
     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
     years = ['2021', '2022', '2023', '2024']
     if callback.data == 'Ввести свой город самостоятельно':
         msg_entered_city = bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
-        bot.register_next_step_handler(msg_entered_city, writing_entered_city)
+        user_city = bot.register_next_step_handler(msg_entered_city, writing_entered_city)
 
     for char in alphabet:
         if callback.data == char:
@@ -29,7 +29,8 @@ def choice_city(callback):
 
     for city in [city for city in look_all_cities()]:
         if callback.data == city:
-            writing_selected_city(message=callback.message, city=callback.data)
+            user_city = take_and_translate_city_for_search(callback.data)
+            years_in_calendar(message=callback.message)
 
     for year in years:
         if callback.data == year:
@@ -51,13 +52,13 @@ def choice_city(callback):
         writing_selected_date(message=callback.message)
 
     if callback.data == 'Концерты':
-        select_event(message=callback.message, city=CITY, date=DATE, concert=True)
+        select_event(message=callback.message, city=user_city, date=DATE, concert=True)
 
     elif callback.data == 'Спектакли':
-        select_event(message=callback.message, city=CITY, date=DATE, performance=True)
+        select_event(message=callback.message, city=user_city, date=DATE, performance=True)
 
     elif callback.data == 'Выставки':
-        select_event(message=callback.message, city=CITY, date=DATE, exhibition=True)
+        select_event(message=callback.message, city=user_city, date=DATE, exhibition=True)
 
 
 def select_letter_your_city(message):
@@ -123,19 +124,8 @@ def difference_events(message):
 
 
 def writing_entered_city(message):
-    global CITY
-    CITY = take_and_translate_city_for_search(city=message.text)
-
-    bot.send_message(chat_id=message.chat.id, text=f'Вы ввели город - {CITY}')
-    years_in_calendar(message=message)
-
-
-def writing_selected_city(message, city):
-    global CITY
-    CITY = take_and_translate_city_for_search(city=city)
-
-    bot.send_message(chat_id=message.chat.id, text=f'Вы выбрали город - {CITY}')
-    years_in_calendar(message=message)
+    city = take_and_translate_city_for_search(city=message.text)
+    return city
 
 
 def writing_selected_date(message):
