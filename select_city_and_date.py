@@ -17,6 +17,7 @@ class City:
 class Date:
     year: str
     month: str
+    month_num: str
     day: str
 
 
@@ -42,13 +43,16 @@ def choice_city(callback):
             months_in_calendar(message=callback.message)
 
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
-        Date.month = transform_month(month=callback.data)
+        Date.month = callback.data
+        Date.month_num = transform_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
-        Date.month = transform_month(month=callback.data)
+        Date.month = callback.data
+        Date.month_num = transform_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=30)
     elif callback.data == 'Февраль':
-        Date.month = transform_month(month=callback.data)
+        Date.month = callback.data
+        Date.month_num = transform_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=28)
 
     if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:
@@ -56,15 +60,15 @@ def choice_city(callback):
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
-        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month}-{Date.day}',
+        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month_num}-{Date.day}',
                      concert=True)
 
     elif callback.data == 'Спектакли':
-        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month}-{Date.day}',
+        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month_num}-{Date.day}',
                      performance=True)
 
     elif callback.data == 'Выставки':
-        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month}-{Date.day}',
+        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month_num}-{Date.day}',
                      exhibition=True)
 
     elif callback.data == 'Кино':
