@@ -20,11 +20,6 @@ class Date:
     day: str
 
 
-@dataclass
-class CollectionDate:
-    date: str = f'{Date.year}-{Date.month}-{Date.day}'
-
-
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
     alphabet = 'АБВГДЕЖЗИКЛМНОПРСТУФХЧШЭЮЯ'
@@ -58,18 +53,22 @@ def choice_city(callback):
 
     if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:
         Date.day = callback.data
-        bot.send_message(chat_id=callback.message.chat.id, text=f'дата {CollectionDate.date}')
+        bot.send_message(chat_id=callback.message.chat.id, text=f'дата {Date.year}-{Date.month}-{Date.day}')
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
-        bot.send_message(chat_id=callback.message.chat.id, text=f'город {City.city}\nдата {CollectionDate.date}')
-        select_event(message=callback.message, city=City.city, date=CollectionDate.date, concert=True)
+        bot.send_message(chat_id=callback.message.chat.id,
+                         text=f'город {City.city}\nдата {Date.year}-{Date.month}-{Date.day}')
+        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month}-{Date.day}',
+                     concert=True)
 
     elif callback.data == 'Спектакли':
-        select_event(message=callback.message, city=City.city, date=CollectionDate.date, performance=True)
+        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month}-{Date.day}',
+                     performance=True)
 
     elif callback.data == 'Выставки':
-        select_event(message=callback.message, city=City.city, date=CollectionDate.date, exhibition=True)
+        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month}-{Date.day}',
+                     exhibition=True)
 
 
 def select_letter_your_city(message):
