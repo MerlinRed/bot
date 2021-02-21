@@ -57,9 +57,11 @@ def choice_city(callback):
 
     if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:
         Date.day = callback.data
+        bot.send_message(chat_id=callback.message.chat.id, text=f'дата {Date.date}')
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
+        bot.send_message(chat_id=callback.message.chat.id, text=f'город {City.city}\nдата {Date.date}')
         select_event(message=callback.message, city=City.city, date=Date.date, concert=True)
 
     elif callback.data == 'Спектакли':
