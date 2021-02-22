@@ -77,7 +77,7 @@ def choice_city(callback):
 
 
 def select_letter_your_city(message):
-    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ'
+    alphabet = 'АБВГДЕЖЗИКЛМНОПРСТУФХЧШЭЮЯ'
     inline_button_enter_your_city = types.InlineKeyboardButton(text='Ввести свой город самостоятельно',
                                                                callback_data='Ввести свой город самостоятельно')
     inline_button_choice_letter = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for
