@@ -1,5 +1,6 @@
 import html
 import json
+from dataclasses import dataclass
 
 import lxml.html
 import pymorphy2
@@ -8,6 +9,11 @@ from bs4 import BeautifulSoup
 
 from load_all import bot
 from transliteration import transliteration_data
+
+
+@dataclass
+class SpecialCityForMovies:
+    special_city: str
 
 
 def take_and_translate_city_for_search(city):
@@ -70,8 +76,16 @@ def found_events(message, url):
 
 
 def search_cinema(message, city, day_month):
+    if city == 'moskva':
+        SpecialCityForMovies.special_city = 'msk'
+    elif city == 'sankt-peterburg':
+        SpecialCityForMovies.special_city = 'spb'
+    elif city == 'arhangelsk':
+        SpecialCityForMovies.special_city = 'arkhangelsk'
+    else:
+        SpecialCityForMovies.special_city = city
     list_movies = []
-    url = f'https://www.afisha.ru/{city}/schedule_cinema/{day_month}/'
+    url = f'https://www.afisha.ru/{SpecialCityForMovies.special_city}/schedule_cinema/{day_month}/'
     response = requests.get(url=url)
     events = BeautifulSoup(response.content, 'html.parser').find('div', class_='content content_view_cards')
     for event in events.find_all('section', {'class': 'oIhSV _2nJif like-container'}):
