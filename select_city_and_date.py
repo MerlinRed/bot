@@ -37,17 +37,17 @@ def choice_city(callback):
 
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
         declension = declension_month(month=callback.data)
-        special_month = transform_month(month=declension.data)
+        special_month = transform_month(month=declension)
         Date.month = special_month
         days_in_calendar(message=callback.message, quantity_days=31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
         declension = declension_month(month=callback.data)
-        special_month = transform_month(month=declension.data)
+        special_month = transform_month(month=declension)
         Date.month = special_month
         days_in_calendar(message=callback.message, quantity_days=30)
     elif callback.data == 'Февраль':
         declension = declension_month(month=callback.data)
-        special_month = transform_month(month=declension.data)
+        special_month = transform_month(month=declension)
         Date.month = special_month
         days_in_calendar(message=callback.message, quantity_days=28)
 
