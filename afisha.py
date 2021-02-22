@@ -1,6 +1,5 @@
 import html
 import json
-from dataclasses import dataclass
 
 import lxml.html
 import pymorphy2
@@ -35,12 +34,15 @@ def declension_month(month):
 
 def select_event(message, city, date, concert=False, exhibition=False, performance=False):
     if concert:
+        # https://www.afisha.ru/msk/schedule_concert/26-fevralya/
         url = f'https://www.culture.ru/afisha/{city}/kontserti?seanceStartDate={date}&seanceEndDate={date}'
         found_events(message=message, url=url)
     elif exhibition:
+        # https://www.afisha.ru/msk/schedule_exhibition/24-fevralya/
         url = f'https://www.culture.ru/afisha/{city}/vistavki?seanceStartDate={date}&seanceEndDate={date}'
         found_events(message=message, url=url)
     elif performance:
+        # https://www.afisha.ru/msk/schedule_theatre/24-fevralya/
         url = f'https://www.culture.ru/afisha/{city}/spektakli?seanceStartDate={date}&seanceEndDate={date}'
         found_events(message=message, url=url)
 
@@ -71,6 +73,8 @@ def found_events(message, url):
 
 
 def search_cinema(message, city, day_month):
+    # нужно будет вывести на уровень ввода города
+    # убрать выбор года
     if city == 'moskva':
         url = f'https://www.afisha.ru/msk/schedule_cinema/{day_month}/'
     elif city == 'sankt-peterburg':
@@ -94,4 +98,3 @@ def search_cinema(message, city, day_month):
     for movie in sort_movies:
         bot.send_message(chat_id=message.chat.id,
                          text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}')
-
