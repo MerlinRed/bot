@@ -51,19 +51,12 @@ def search_concert(message, url):
         for genre in event.find_all('a', {'class': 'WR4gB'}): ...
         for name in event.find_all('h3', {'class': 'heHLK'}): ...
         for time in event.find_all('div', {'class': '_1Jo7v'}): ...
-        description = [div for div in event.select('div') if not div.has_attr('class')]
-        sort_concerts = sorted(set(list_concerts))
-        try:
-            list_concerts.append((genre.get_text(), name.get_text(), time.get_text(), description[0].get_text()))
-            for concert in sort_concerts:
-                bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {concert[0]}\nназвание - {concert[1]}\n' \
-                                      f'место и дата - {concert[2]}\nописание - {concert[3]}')
-        except IndexError:
-            list_concerts.append((genre.get_text(), name.get_text()))
-            for concert in sort_concerts:
-                bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {concert[0]}\nназвание - {concert[1]}\nместо и дата - {concert[2]}')
+        list_concerts.append((genre.get_text(), name.get_text(), time.get_text()))
+
+    sort_concerts = sorted(set(list_concerts))
+    for concert in sort_concerts:
+        bot.send_message(chat_id=message.chat.id,
+                         text=f'жанр - {concert[0]}\nназвание - {concert[1]}\nместо и дата - {concert[2]}')
 
 
 def search_exhibition(message, url):
@@ -74,20 +67,13 @@ def search_exhibition(message, url):
         for genre in event.find_all('a', {'class': 'WR4gB'}): ...
         for name in event.find_all('h3', {'class': 'heHLK'}): ...
         for time in event.find_all('div', {'class': '_1Jo7v'}): ...
-        description = [div for div in event.select('div') if not div.has_attr('class')]
-        sort_exhibitions = sorted(set(list_exhibitions))
-        try:
-            list_exhibitions.append((genre.get_text(), name.get_text(), time.get_text(), description[0].get_text()))
-            for exhibition in sort_exhibitions:
-                bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {exhibition[0]}\nназвание - {exhibition[1]}\n' \
-                                      f'место и дата окончания выстовки - {exhibition[2]}\nописание - {exhibition[3]}')
-        except IndexError:
-            list_exhibitions.append((genre.get_text(), name.get_text()))
-            for exhibition in sort_exhibitions:
-                bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {exhibition[0]}\nназвание - {exhibition[1]}\n' \
-                                      f'место и дата окончания выстовки - {exhibition[2]}')
+        list_exhibitions.append((genre.get_text(), name.get_text(), time.get_text()))
+
+    sort_exhibitions = sorted(set(list_exhibitions))
+    for exhibition in sort_exhibitions:
+        bot.send_message(chat_id=message.chat.id,
+                         text=f'жанр - {exhibition[0]}\nназвание - {exhibition[1]}\n' \
+                              f'место и дата окончания выстовки - {exhibition[2]}')
 
 
 def search_performance(message, url):
@@ -98,20 +84,13 @@ def search_performance(message, url):
         for genre in event.find_all('a', {'class': 'WR4gB'}): ...
         for name in event.find_all('h3', {'class': 'heHLK'}): ...
         for time in event.find_all('div', {'class': '_1Jo7v'}): ...
-        description = [div for div in event.select('div') if not div.has_attr('class')]
-        sort_performance = sorted(set(list_performance))
-        try:
-            list_performance.append((genre.get_text(), name.get_text(), time.get_text(), description[0].get_text()))
-            for performance in sort_performance:
-                bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {performance[0]}\nназвание - {performance[1]}\n' \
-                                      f'место и дата - {performance[2]}\nописание - {performance[3]}')
-        except IndexError:
-            list_performance.append((genre.get_text(), name.get_text()))
-            for performance in sort_performance:
-                bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {performance[0]}\nназвание - {performance[1]}\n' \
-                                      f'место и дата - {performance[2]}')
+        list_performance.append((genre.get_text(), name.get_text(), time.get_text()))
+
+    sort_performance = sorted(set(list_performance))
+    for performance in sort_performance:
+        bot.send_message(chat_id=message.chat.id,
+                         text=f'жанр - {performance[0]}\nназвание - {performance[1]}\n' \
+                              f'место и дата - {performance[2]}')
 
 
 def search_cinema(message, url):
@@ -122,14 +101,9 @@ def search_cinema(message, url):
         for genre in event.find_all('a', {'class': 'WR4gB'}): ...
         for name in event.find_all('h3', {'class': 'heHLK'}): ...
         description = [div for div in event.select('div') if not div.has_attr('class')]
-        sort_movies = sorted(set(list_movies))
-        try:
-            list_movies.append((genre.get_text(), name.get_text(), description[0].get_text()))
-            for movie in sort_movies:
-                bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}')
-        except IndexError:
-            list_movies.append((genre.get_text(), name.get_text()))
-            for movie in sort_movies:
-                bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {movie[0]}\nназвание - {movie[1]}')
+        list_movies.append((genre.get_text(), name.get_text(), description[0].get_text()))
+
+    sort_movies = sorted(set(list_movies))
+    for movie in sort_movies:
+        bot.send_message(chat_id=message.chat.id,
+                         text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}')
