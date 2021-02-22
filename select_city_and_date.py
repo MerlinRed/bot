@@ -21,7 +21,7 @@ class Date:
 
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
-    alphabet = 'АБВГДЕЖЗИКЛМНОПРСТУФХЧШЩЭЮЯ'
+    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЧШЩЭЮЯ'
     if callback.data == 'Ввести свой город самостоятельно':
         msg_entered_city = bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
         bot.register_next_step_handler(msg_entered_city, writing_entered_city)
@@ -62,7 +62,7 @@ def choice_city(callback):
 
 
 def select_letter_your_city(message):
-    alphabet = 'АБВГДЕЖЗИКЛМНОПРСТУФХЧШЩЭЮЯ'
+    alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЧШЩЭЮЯ'
     inline_button_enter_your_city = types.InlineKeyboardButton(text='Ввести свой город самостоятельно',
                                                                callback_data='Ввести свой город самостоятельно')
     inline_button_choice_letter = [types.InlineKeyboardButton(text=f'{letter}', callback_data=f'{letter}') for
