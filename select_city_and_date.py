@@ -117,10 +117,10 @@ def difference_events(message):
 
 
 def writing_entered_city(message):
-    City.city = city_name_in_url(city=message.text)
+    City.city = city_name_in_url(city=message.text.lower())
     months_in_calendar(message=message)
 
 
 def writing_selected_city(message, city):
-    City.city = city_name_in_url(city=city)
+    City.city = city_name_in_url(city=city.lower())
     months_in_calendar(message=message)
