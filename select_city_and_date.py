@@ -36,18 +36,18 @@ def choice_city(callback):
             writing_selected_city(message=callback.message, city=callback.data)
 
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
-        translit_city = transform_month(month=callback.data)
-        special_month = declension_month(month=translit_city)
+        declension = declension_month(month=callback.data)
+        special_month = transform_month(month=declension.data)
         Date.month = special_month
         days_in_calendar(message=callback.message, quantity_days=31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
-        translit_city = transform_month(month=callback.data)
-        special_month = declension_month(month=translit_city)
+        declension = declension_month(month=callback.data)
+        special_month = transform_month(month=declension.data)
         Date.month = special_month
         days_in_calendar(message=callback.message, quantity_days=30)
     elif callback.data == 'Февраль':
-        translit_city = transform_month(month=callback.data)
-        special_month = declension_month(month=translit_city)
+        declension = declension_month(month=callback.data)
+        special_month = transform_month(month=declension.data)
         Date.month = special_month
         days_in_calendar(message=callback.message, quantity_days=28)
 
@@ -56,19 +56,16 @@ def choice_city(callback):
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
-        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}',
-                     concert=True)
+        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', concert=True)
 
-    elif callback.data == 'Спектакли':
-        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}',
-                     performance=True)
+    elif callback.data == 'Театр':
+        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', performance=True)
 
     elif callback.data == 'Выставки':
-        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}',
-                     exhibition=True)
+        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', exhibition=True)
 
     elif callback.data == 'Кино':
-        search_cinema(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}')
+        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', movie=True)
 
 
 def select_letter_your_city(message):
@@ -115,10 +112,10 @@ def days_in_calendar(message, quantity_days):
 
 
 def difference_events(message):
-    inline_button_concert = types.InlineKeyboardButton(text=f'Концерты', callback_data=f'Концерты')
-    inline_button_cinema = types.InlineKeyboardButton(text=f'Кино', callback_data=f'Кино')
-    inline_button_performance = types.InlineKeyboardButton(text=f'Спектакли', callback_data=f'Спектакли')
-    inline_button_exhibition = types.InlineKeyboardButton(text=f'Выставки', callback_data=f'Выставки')
+    inline_button_concert = types.InlineKeyboardButton(text='Концерты', callback_data='Концерты')
+    inline_button_cinema = types.InlineKeyboardButton(text='Кино', callback_data='Кино')
+    inline_button_performance = types.InlineKeyboardButton(text='Театр', callback_data='Театр')
+    inline_button_exhibition = types.InlineKeyboardButton(text='Выставки', callback_data='Выставки')
     inline_markup_choice_event = types.InlineKeyboardMarkup().add(inline_button_concert, inline_button_cinema,
                                                                   inline_button_performance,
                                                                   inline_button_exhibition)
