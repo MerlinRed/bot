@@ -73,9 +73,9 @@ def search_cinema(message, city, day_month):
     list_movies = []
     if city == 'moskva':
         city = 'msk'
-    elif city == 'sankt-peterburg':
+    if city == 'sankt-peterburg':
         city = 'spb'
-    elif city == 'arhangelsk':
+    if city == 'arhangelsk':
         city = 'arkhangelsk'
     url = f'https://www.afisha.ru/{city}/schedule_cinema/{day_month}/'
     response = requests.get(url=url)
