@@ -15,9 +15,7 @@ class City:
 
 @dataclass
 class Date:
-    year: str
     month: str
-    month_num: str
     day: str
 
 
@@ -37,22 +35,20 @@ def choice_city(callback):
         if callback.data == city:
             writing_selected_city(message=callback.message, city=callback.data)
 
-    for year in years:
-        if callback.data == year:
-            Date.year = callback.data
-            months_in_calendar(message=callback.message)
-
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
-        Date.month = callback.data
-        Date.month_num = transform_month(month=callback.data)
+        translit_city = transform_month(month=callback.data)
+        special_month = declension_month(month=translit_city)
+        Date.month = special_month
         days_in_calendar(message=callback.message, quantity_days=31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
-        Date.month = callback.data
-        Date.month_num = transform_month(month=callback.data)
+        translit_city = transform_month(month=callback.data)
+        special_month = declension_month(month=translit_city)
+        Date.month = special_month
         days_in_calendar(message=callback.message, quantity_days=30)
     elif callback.data == 'Февраль':
-        Date.month = callback.data
-        Date.month_num = transform_month(month=callback.data)
+        translit_city = transform_month(month=callback.data)
+        special_month = declension_month(month=translit_city)
+        Date.month = special_month
         days_in_calendar(message=callback.message, quantity_days=28)
 
     if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:
@@ -60,20 +56,19 @@ def choice_city(callback):
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
-        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month_num}-{Date.day}',
+        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}',
                      concert=True)
 
     elif callback.data == 'Спектакли':
-        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month_num}-{Date.day}',
+        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}',
                      performance=True)
 
     elif callback.data == 'Выставки':
-        select_event(message=callback.message, city=City.city, date=f'{Date.year}-{Date.month_num}-{Date.day}',
+        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}',
                      exhibition=True)
 
     elif callback.data == 'Кино':
-        special_month = declension_month(month=Date.month)
-        search_cinema(message=callback.message, city=City.city, day_month=f'{Date.day}-{special_month}')
+        search_cinema(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}')
 
 
 def select_letter_your_city(message):
@@ -98,15 +93,6 @@ def select_name_your_city(message, char):
     inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
     bot.send_message(chat_id=message.chat.id, text='Выберите ваш город.',
                      reply_markup=inline_markup_choice_city)
-
-
-def years_in_calendar(message):
-    years = ['2021', '2022']
-    inline_button_choice_year = [types.InlineKeyboardButton(text=f'{year}', callback_data=f'{year}') for
-                                 year in years]
-    inline_markup_choice_year = types.InlineKeyboardMarkup().add(*inline_button_choice_year)
-    bot.send_message(chat_id=message.chat.id, text='Выберите интересующий вас год',
-                     reply_markup=inline_markup_choice_year)
 
 
 def months_in_calendar(message):
@@ -142,9 +128,9 @@ def difference_events(message):
 
 def writing_entered_city(message):
     City.city = take_and_translate_city_for_search(city=message.text)
-    years_in_calendar(message=message)
+    months_in_calendar(message=message)
 
 
 def writing_selected_city(message, city):
     City.city = take_and_translate_city_for_search(city=city)
-    years_in_calendar(message=message)
+    months_in_calendar(message=message)

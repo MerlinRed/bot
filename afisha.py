@@ -72,18 +72,10 @@ def found_events(message, url):
                          text='Ничего не найдено.')
 
 
-def search_cinema(message, city, day_month):
-    # нужно будет вывести на уровень ввода города
+def search_cinema(message, city, date):
     # убрать выбор года
-    if city == 'moskva':
-        url = f'https://www.afisha.ru/msk/schedule_cinema/{day_month}/'
-    elif city == 'sankt-peterburg':
-        url = f'https://www.afisha.ru/spb/schedule_cinema/{day_month}/'
-    elif city == 'arhangelsk':
-        url = f'https://www.afisha.ru/arkhangelsk/schedule_cinema/{day_month}/'
-    else:
-        url = f'https://www.afisha.ru/{city}/schedule_cinema/{day_month}/'
     list_movies = []
+    url = f'https://www.afisha.ru/{city}/schedule_cinema/{date}/'
     response = requests.get(url=url)
     events = BeautifulSoup(response.content, 'html.parser').find('div', class_='content content_view_cards')
     for event in events.find_all('section', {'class': 'oIhSV _2nJif like-container'}):
