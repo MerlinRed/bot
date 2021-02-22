@@ -75,6 +75,8 @@ def search_cinema(message, city, day_month):
         city = 'msk'
     elif city == 'sankt-peterburg':
         city = 'spb'
+    elif city == 'arhangelsk':
+        city = 'arkhangelsk'
     url = f'https://www.afisha.ru/{city}/schedule_cinema/{day_month}/'
     response = requests.get(url=url)
     events = BeautifulSoup(response.content, 'html.parser').find('div', class_='content content_view_cards')
@@ -90,5 +92,3 @@ def search_cinema(message, city, day_month):
     for movie in sort_movies:
         bot.send_message(chat_id=message.chat.id,
                          text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}')
-
-
