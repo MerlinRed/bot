@@ -70,8 +70,25 @@ def found_events(message, url):
 
 
 def search_cinema(message, city, day_month):
+    list_movies = []
+    if city == 'moskva':
+        city = 'msk'
+    elif city == 'sankt-peterburg':
+        city = 'spb'
     url = f'https://www.afisha.ru/{city}/schedule_cinema/{day_month}/'
     response = requests.get(url=url)
     events = BeautifulSoup(response.content, 'html.parser').find('div', class_='content content_view_cards')
-    for event in events.find_all('a', {'class': '_1F19s'}):
-        bot.send_message(chat_id=message.chat.id, text=event.get_text())
+    for event in events.find_all('section', {'class': 'oIhSV _2nJif like-container'}):
+        for genre in event.find_all('a', {'class': 'WR4gB'}):
+            pass
+        for name in event.find_all('h3', {'class': 'heHLK'}):
+            pass
+        description = [div for div in event.select('div') if not div.has_attr('class')]
+        list_movies.append((genre.get_text(), name.get_text(), description[0].get_text()))
+
+    sort_movies = sorted(set(list_movies))
+    for movie in sort_movies:
+        bot.send_message(chat_id=message.chat.id,
+                         text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}')
+
+
