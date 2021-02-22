@@ -11,11 +11,6 @@ from load_all import bot
 from transliteration import transliteration_data
 
 
-@dataclass
-class SpecialCityForMovies:
-    special_city: str
-
-
 def take_and_translate_city_for_search(city):
     city_in_english = transliteration_data(data=city)
     return city_in_english
@@ -77,15 +72,14 @@ def found_events(message, url):
 
 def search_cinema(message, city, day_month):
     if city == 'moskva':
-        SpecialCityForMovies.special_city = 'msk'
+        url = f'https://www.afisha.ru/msk/schedule_cinema/{day_month}/'
     elif city == 'sankt-peterburg':
-        SpecialCityForMovies.special_city = 'spb'
+        url = f'https://www.afisha.ru/spb/schedule_cinema/{day_month}/'
     elif city == 'arhangelsk':
-        SpecialCityForMovies.special_city = 'arkhangelsk'
+        url = f'https://www.afisha.ru/arkhangelsk/schedule_cinema/{day_month}/'
     else:
-        SpecialCityForMovies.special_city = city
+        url = f'https://www.afisha.ru/{city}/schedule_cinema/{day_month}/'
     list_movies = []
-    url = f'https://www.afisha.ru/{SpecialCityForMovies.special_city}/schedule_cinema/{day_month}/'
     response = requests.get(url=url)
     events = BeautifulSoup(response.content, 'html.parser').find('div', class_='content content_view_cards')
     for event in events.find_all('section', {'class': 'oIhSV _2nJif like-container'}):
@@ -100,3 +94,4 @@ def search_cinema(message, city, day_month):
     for movie in sort_movies:
         bot.send_message(chat_id=message.chat.id,
                          text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}')
+

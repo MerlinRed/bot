@@ -73,8 +73,7 @@ def choice_city(callback):
 
     elif callback.data == 'Кино':
         special_month = declension_month(month=Date.month)
-        search_cinema(message=callback.message, city=City.city,
-                      day_month=f'{Date.day}-{special_month}')
+        search_cinema(message=callback.message, city=City.city, day_month=f'{Date.day}-{special_month}')
 
 
 def select_letter_your_city(message):
