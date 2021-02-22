@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from telebot import types
 
-from afisha import take_and_translate_city_for_search, select_event, declension_month
+from afisha import city_name_in_url, select_event, declension_month
 from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
@@ -117,10 +117,10 @@ def difference_events(message):
 
 
 def writing_entered_city(message):
-    City.city = take_and_translate_city_for_search(city=message.text)
+    City.city = city_name_in_url(city=message.text)
     months_in_calendar(message=message)
 
 
 def writing_selected_city(message, city):
-    City.city = take_and_translate_city_for_search(city=city)
+    City.city = city_name_in_url(city=city)
     months_in_calendar(message=message)

@@ -6,9 +6,12 @@ from load_all import bot
 from transliteration import transliteration_data
 
 
-def take_and_translate_city_for_search(city):
-    city_in_english = transliteration_data(data=city)
-    return city_in_english
+def city_name_in_url(city):
+    response = requests.get(url='https://www.afisha.ru/')
+    all_cities = BeautifulSoup(response.content, 'html.parser').find('ul', class_='city-switcher__list')
+    for city_name in all_cities.find_all('a', {'class': 'city-switcher__item-link'}, href=True):
+        if city_name.get_text() == city:
+            return city_name['href'].strip('/')
 
 
 def declension_month(month):
