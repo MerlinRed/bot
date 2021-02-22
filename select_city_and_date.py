@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 from telebot import types
 
-from afisha import take_and_translate_city_for_search, transform_month, select_event, search_cinema, declension_month
+from afisha import take_and_translate_city_for_search, select_event, declension_month
 from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
@@ -22,7 +22,6 @@ class Date:
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
     alphabet = 'АБВГДЕЖЗИКЛМНОПРСТУФХЧШЭЮЯ'
-    years = ['2021', '2022', '2023', '2024']
     if callback.data == 'Ввести свой город самостоятельно':
         msg_entered_city = bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
         bot.register_next_step_handler(msg_entered_city, writing_entered_city)
@@ -36,19 +35,13 @@ def choice_city(callback):
             writing_selected_city(message=callback.message, city=callback.data)
 
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
-        declension = declension_month(month=callback.data)
-        special_month = transform_month(month=declension)
-        Date.month = special_month
+        Date.month = declension_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
-        declension = declension_month(month=callback.data)
-        special_month = transform_month(month=declension)
-        Date.month = special_month
+        Date.month = declension_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=30)
     elif callback.data == 'Февраль':
-        declension = declension_month(month=callback.data)
-        special_month = transform_month(month=declension)
-        Date.month = special_month
+        Date.month = declension_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=28)
 
     if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:

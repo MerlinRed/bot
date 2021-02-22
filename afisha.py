@@ -11,15 +11,6 @@ def take_and_translate_city_for_search(city):
     return city_in_english
 
 
-def transform_month(month):
-    months_in_numbers = dict(Январь='01', Февраль='02', Март='03', Апрель='04', Май='05', Июнь='06', Июль='07',
-                             Август='08', Сентябрь='09',
-                             Октябрь='10', Ноябрь='11', Декабрь='12')
-    for key, value in months_in_numbers.items():
-        if month == key:
-            return value
-
-
 def declension_month(month):
     morph = pymorphy2.MorphAnalyzer()
     declension = morph.parse(f'{month}')[0]
