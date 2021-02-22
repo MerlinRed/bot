@@ -43,6 +43,8 @@ def transliteration_data(data):
         return 'arkhangelsk'
     elif translit_data == 'тюмень':
         return 'tumen'
+    elif translit_data == 'астрахань':
+        return 'astrakhan'
     else:
         for key in transliteration_letters:
             translit_data = translit_data.replace(key, transliteration_letters[key])
