@@ -6,7 +6,6 @@ def transliteration_data(data):
         'г': 'g',
         'д': 'd',
         'е': 'e',
-        'ё': 'e',
         'ж': 'zh',
         'з': 'z',
         'и': 'i',
@@ -22,11 +21,13 @@ def transliteration_data(data):
         'т': 't',
         'у': 'u',
         'ф': 'f',
-        'х': 'kh',
+        'х': 'h',
         'ц': 'c',
         'ч': 'ch',
         'ш': 'sh',
         'щ': 'sh',
+        'ъ': '',
+        'ь': '',
         'ы': 'i',
         'э': 'e',
         'ю': 'u',
@@ -38,6 +39,8 @@ def transliteration_data(data):
         return 'msk'
     elif translit_data == 'санкт-петербург':
         return 'spb'
+    elif translit_data == 'астрахань':
+        return 'astrakhan'
     else:
         for key in transliteration_letters:
             translit_data = translit_data.replace(key, transliteration_letters[key])
