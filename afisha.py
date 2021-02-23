@@ -7,7 +7,7 @@ from transliteration import transliteration_data
 
 
 def city_name_in_url(city):
-    if city == 'Москва':
+    if city == 'москва':
         return 'msk'
     response = requests.get(url='https://www.afisha.ru/')
     all_cities = BeautifulSoup(response.content, 'html.parser').find('ul', class_='city-switcher__list')
