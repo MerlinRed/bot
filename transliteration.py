@@ -35,13 +35,6 @@ def transliteration_data(data):
         ' ': '_'}
 
     translit_data = data.lower()
-    if translit_data == 'москва':
-        return 'msk'
-    elif translit_data == 'санкт-петербург':
-        return 'spb'
-    elif translit_data == 'астрахань':
-        return 'astrakhan'
-    else:
-        for key in transliteration_letters:
-            translit_data = translit_data.replace(key, transliteration_letters[key])
-        return translit_data.lower()
+    for key in transliteration_letters:
+        translit_data = translit_data.replace(key, transliteration_letters[key])
+    return translit_data.lower()

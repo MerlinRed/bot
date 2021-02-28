@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 import logging
-import re
 from dataclasses import dataclass
 
 from load_all import bot
+from registration import check_valid_email
 from work_with_db import select_user_from_db, select_active_from_db, update_user_authorization, select_auth_user
 from work_with_db import update_exit_user_from_account
 
@@ -31,7 +31,6 @@ def authorization(message):
 
 
 def authorization_email(message):
-    pattern = re.compile('^[a-zA-Z0-9]+([\.-]?[a-zA-Z0-9]+)*@[a-zA-Z]+([\.-]?[a-zA-Z]+)*(\.[a-zA-Z]{2,3})+$')
     bot.send_message(chat_id=message.chat.id, text='Проверка адреса почты.')
     email = message.text
 
@@ -39,9 +38,7 @@ def authorization_email(message):
                         level=logging.INFO)
     logging.info(msg=f'Authorization email: {email}\n')
 
-    is_valid = pattern.match(email)
-    is_valid_email = is_valid.group() if is_valid else False
-    if is_valid_email:
+    if check_valid_email(email):
         Email.email = email
         msg_password = bot.send_message(chat_id=message.chat.id, text='Введите пароль для авторизации.')
         bot.register_next_step_handler(msg_password, authorization_email_password)
