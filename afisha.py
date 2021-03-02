@@ -59,6 +59,11 @@ def search_concert(message, url):
                 list_concerts.append((genre.get_text(), name.get_text(), time.get_text(), description[0].get_text()))
             except IndexError:
                 list_concerts.append((genre.get_text(), name.get_text(), time.get_text()))
+            except UnboundLocalError:
+                try:
+                    list_concerts.append((name.get_text(), time.get_text(), description[0].get_text()))
+                except IndexError:
+                    list_concerts.append((name.get_text(), time.get_text()))
 
         sort_concerts = sorted(set(list_concerts))
         for concert in sort_concerts:
@@ -70,6 +75,13 @@ def search_concert(message, url):
             except IndexError:
                 bot.send_message(chat_id=message.chat.id,
                                  text=f'жанр - {concert[0]}\nназвание - {concert[1]}\nместо и дата - {concert[2]}')
+            except UnboundLocalError:
+                try:
+                    bot.send_message(chat_id=message.chat.id,
+                                     text=f'название - {concert[1]}\nместо и дата - {concert[2]}\nописание - {concert[3]}')
+                except IndexError:
+                    bot.send_message(chat_id=message.chat.id,
+                                     text=f'название - {concert[1]}\nместо и дата - {concert[2]}')
 
     except AttributeError:
         bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')
