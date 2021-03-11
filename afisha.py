@@ -73,8 +73,12 @@ def search_concert(message, url):
                                  text=f'жанр - {concert[0]}\nназвание - {concert[1]}\n' \
                                       f'место и дата - {concert[2]}\nописание - {concert[3]}')
             except IndexError:
-                bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {concert[0]}\nназвание - {concert[1]}\nместо и дата - {concert[2]}')
+                try:
+                    bot.send_message(chat_id=message.chat.id,
+                                     text=f'жанр - {concert[0]}\nназвание - {concert[1]}\nместо и дата - {concert[2]}')
+                except IndexError:
+                    bot.send_message(chat_id=message.chat.id,
+                                     text=f'жанр - {concert[0]}\nназвание - {concert[1]}')
             except UnboundLocalError:
                 try:
                     bot.send_message(chat_id=message.chat.id,
