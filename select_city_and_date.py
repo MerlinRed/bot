@@ -23,7 +23,7 @@ class Date:
 def choice_city(callback):
     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЧШЩЭЮЯ'
     if callback.data == 'Ввести свой город самостоятельно':
-        msg_entered_city = bot.send_message(chat_id=callback.message.from_user.id, text='Введите ваш город')
+        msg_entered_city = bot.send_message(chat_id=callback.from_user.id, text='Введите ваш город')
         bot.register_next_step_handler(msg_entered_city, writing_entered_city)
 
     for char in alphabet:
@@ -70,7 +70,7 @@ def select_letter_your_city(message):
     inline_markup_choice_letter = types.InlineKeyboardMarkup().add(inline_button_enter_your_city,
                                                                    *inline_button_choice_letter)
     bot.send_message(chat_id=message.from_user.id,
-                     text='Нажмите на начальную букву вашего города.' \
+                     text='Нажмите на начальную букву вашего города.'
                           '\nЕсли вашего города нет в списке, введите его самостоятельно.',
                      reply_markup=inline_markup_choice_letter)
 
