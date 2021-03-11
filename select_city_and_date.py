@@ -21,6 +21,7 @@ class Date:
 
 @bot.callback_query_handler(func=lambda callback: True)
 def choice_city(callback):
+    callback.message.from_user.id = callback.from_user.id
     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЧШЩЭЮЯ'
     if callback.data == 'Ввести свой город самостоятельно':
         msg_entered_city = bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
@@ -49,19 +50,15 @@ def choice_city(callback):
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
-        callback.message.from_user.id = callback.from_user.id
         select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', concert=True)
 
     elif callback.data == 'Театр':
-        callback.message.from_user.id = callback.from_user.id
         select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', performance=True)
 
     elif callback.data == 'Выставки':
-        callback.message.from_user.id = callback.from_user.id
         select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', exhibition=True)
 
     elif callback.data == 'Кино':
-        callback.message.from_user.id = callback.from_user.id
         select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', movie=True)
 
 
