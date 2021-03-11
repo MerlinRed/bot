@@ -29,36 +29,46 @@ def choice_city(callback):
 
     for char in alphabet:
         if callback.data == char:
+            callback.message.from_user.id = callback.from_user.id
             select_name_your_city(message=callback.message, char=char)
 
     for city in [city for city in look_all_cities()]:
         if callback.data == city:
+            callback.message.from_user.id = callback.from_user.id
             writing_selected_city(message=callback.message, city=callback.data)
 
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
+        callback.message.from_user.id = callback.from_user.id
         Date.month = declension_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
+        callback.message.from_user.id = callback.from_user.id
         Date.month = declension_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=30)
     elif callback.data == 'Февраль':
+        callback.message.from_user.id = callback.from_user.id
         Date.month = declension_month(month=callback.data)
         days_in_calendar(message=callback.message, quantity_days=28)
 
     if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:
+        callback.message.from_user.id = callback.from_user.id
         Date.day = callback.data
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
+        callback.message.from_user.id = callback.from_user.id
         select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', concert=True)
 
     elif callback.data == 'Театр':
+        callback.message.from_user.id = callback.from_user.id
         select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', performance=True)
 
     elif callback.data == 'Выставки':
+        callback.message.from_user.id = callback.from_user.id
         select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', exhibition=True)
 
     elif callback.data == 'Кино':
+        callback.message.from_user.id = callback.from_user.id
         select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', movie=True)
 
 
