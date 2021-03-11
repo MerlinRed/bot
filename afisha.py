@@ -68,8 +68,7 @@ def search_concert(message, url):
             try:
                 bot.send_message(chat_id=message.chat.id,
                                  text=f'жанр - {concert[0]}\nназвание - {concert[1]}\n' \
-                                      f'место и дата - {concert[2]}\nописание - {concert[3]}')
-                bot.send_message(chat_id=message.from_user.id, text=f'твой id {message.from_user.id}')
+                                      f'место и дата - {concert[2]}\nописание - {concert[3]}\nтвой id {message.from_user.id}')
             except IndexError:
                 try:
                     bot.send_message(chat_id=message.chat.id,
