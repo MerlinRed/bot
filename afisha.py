@@ -4,16 +4,13 @@ from bs4 import BeautifulSoup
 
 from load_all import bot
 from transliteration import transliteration_data
+from city_db import select_city
 
 
 def city_name_in_url(city):
     if city == 'москва':
         return 'msk'
-    response = requests.get(url='https://www.afisha.ru/')
-    all_cities = BeautifulSoup(response.content, 'html.parser').find('ul', class_='city-switcher__list')
-    for city_name in all_cities.find_all('a', {'class': 'city-switcher__item-link'}, href=True):
-        if city_name.get_text().lower() == city:
-            return city_name['href'].strip('/')
+    return select_city(rus_city=city)
 
 
 def declension_month(month):

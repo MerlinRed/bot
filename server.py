@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 from flask import Flask
 
-from work_with_db import update_mail_activated
+from users_db import update_mail_activated
 
 app = Flask(__name__)
 

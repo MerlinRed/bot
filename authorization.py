@@ -4,8 +4,8 @@ from dataclasses import dataclass
 
 from load_all import bot
 from registration import check_valid_email
-from work_with_db import select_user_from_db, select_active_from_db, update_user_authorization, select_auth_user
-from work_with_db import update_exit_user_from_account
+from users_db import select_user_from_db, select_active_from_db, update_user_authorization, select_auth_user
+from users_db import update_exit_user_from_account
 
 
 @dataclass

@@ -8,7 +8,7 @@ connection = psycopg2.connect(dbname='tele', user=PG_USER, password=PG_PASS)
 cur = connection.cursor()
 
 
-def create_table_users():
+def __create_table_users():
     cur.execute("""
                  CREATE TABLE IF NOT EXISTS users
                 (
@@ -105,4 +105,4 @@ def update_exit_user_from_account(user_id):
     connection.commit()
 
 
-create_table_users()
+__create_table_users()
