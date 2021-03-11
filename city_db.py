@@ -42,7 +42,7 @@ def select_city(rus_city):
                     (rus_city,))
         connection.commit()
         fetch = cur.fetchone()
-        return fetch[1]
+        return fetch[1] if fetch is not None else None
     except InFailedSqlTransaction:
         connection.rollback()
 
