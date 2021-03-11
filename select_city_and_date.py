@@ -49,7 +49,7 @@ def choice_city(callback):
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
-        select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', concert=True)
+        select_event(message=callback.from_user.id, city=City.city, date=f'{Date.day}-{Date.month}', concert=True)
 
     elif callback.data == 'Театр':
         select_event(message=callback.message, city=City.city, date=f'{Date.day}-{Date.month}', performance=True)
