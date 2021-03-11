@@ -172,10 +172,10 @@ def search_cinema(message, url):
         for movie in sort_movies:
 
             try:
-                bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}\n\nтвой id {message.from_user.id}')
+                bot.send_message(chat_id=message.from_user.id,
+                                 text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}')
             except IndexError:
-                bot.send_message(chat_id=message.chat.id,
+                bot.send_message(chat_id=message.from_user.id,
                                  text=f'жанр - {movie[0]}\nназвание - {movie[1]}')
     except AttributeError:
-        bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')
+        bot.send_message(chat_id=message.from_user.id, text='Ничего не найдено.')
