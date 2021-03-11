@@ -25,7 +25,7 @@ def __create_table_cities():
 
 def __create_index():
     cur.execute("""CREATE INDEX IF NOT EXISTS cities_index
-                    ON TABLE cities (eng_city, rus_city)
+                    ON cities (eng_city, rus_city)
                 """)
 
 
