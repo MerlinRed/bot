@@ -67,8 +67,8 @@ def search_concert(message, url):
 
             try:
                 bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {concert[0]}\nназвание - {concert[1]}\n' \
-                                      f'место и дата - {concert[2]}\nописание - {concert[3]}\nтвой id {message.from_user.id}')
+                                 text=f'жанр - {concert[0]}\nназвание - {concert[1]}\n'
+                                      f'место и дата - {concert[2]}\nописание - {concert[3]}')
             except IndexError:
                 try:
                     bot.send_message(chat_id=message.chat.id,
@@ -109,11 +109,11 @@ def search_exhibition(message, url):
 
             try:
                 bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {exhibition[0]}\nназвание - {exhibition[1]}\n' \
+                                 text=f'жанр - {exhibition[0]}\nназвание - {exhibition[1]}\n'
                                       f'место и дата окончания выстовки - {exhibition[2]}\nописание - {exhibition[3]}')
             except IndexError:
                 bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {exhibition[0]}\nназвание - {exhibition[1]}\n' \
+                                 text=f'жанр - {exhibition[0]}\nназвание - {exhibition[1]}\n'
                                       f'место и дата окончания выстовки - {exhibition[2]}')
 
     except AttributeError:
@@ -142,11 +142,11 @@ def search_performance(message, url):
 
             try:
                 bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {performance[0]}\nназвание - {performance[1]}\n' \
+                                 text=f'жанр - {performance[0]}\nназвание - {performance[1]}\n'
                                       f'место и дата - {performance[2]}\nописание - {performance[3]}')
             except IndexError:
                 bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {performance[0]}\nназвание - {performance[1]}\n' \
+                                 text=f'жанр - {performance[0]}\nназвание - {performance[1]}\n'
                                       f'место и дата - {performance[2]}')
     except AttributeError:
         bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')
@@ -173,7 +173,7 @@ def search_cinema(message, url):
 
             try:
                 bot.send_message(chat_id=message.chat.id,
-                                 text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}')
+                                 text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}\n\nтвой id {message.from_user.id}')
             except IndexError:
                 bot.send_message(chat_id=message.chat.id,
                                  text=f'жанр - {movie[0]}\nназвание - {movie[1]}')
