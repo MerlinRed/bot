@@ -69,8 +69,8 @@ def select_letter_your_city(message):
                                    letter in alphabet]
     inline_markup_choice_letter = types.InlineKeyboardMarkup().add(inline_button_enter_your_city,
                                                                    *inline_button_choice_letter)
-    bot.send_message(chat_id=message.from_user.id,
-                     text='Нажмите на начальную букву вашего города.'
+    bot.send_message(chat_id=message.chat.id,
+                     text='Нажмите на начальную букву вашего города.' \
                           '\nЕсли вашего города нет в списке, введите его самостоятельно.',
                      reply_markup=inline_markup_choice_letter)
 
@@ -81,7 +81,7 @@ def select_name_your_city(message, char):
     inline_button_choice_city = [types.InlineKeyboardButton(text=f'{city}', callback_data=f'{city}') for
                                  city in cities]
     inline_markup_choice_city = types.InlineKeyboardMarkup().add(*inline_button_choice_city)
-    bot.send_message(chat_id=message.from_user.id, text='Выберите ваш город.',
+    bot.send_message(chat_id=message.chat.id, text='Выберите ваш город.',
                      reply_markup=inline_markup_choice_city)
 
 
@@ -91,7 +91,7 @@ def months_in_calendar(message):
     inline_button_choice_month = [types.InlineKeyboardButton(text=f'{month}', callback_data=f'{month}') for
                                   month in months]
     inline_markup_choice_month = types.InlineKeyboardMarkup().add(*inline_button_choice_month)
-    bot.send_message(chat_id=message.from_user.id, text='Выберите интересующий вас месяц',
+    bot.send_message(chat_id=message.chat.id, text='Выберите интересующий вас месяц',
                      reply_markup=inline_markup_choice_month)
 
 
@@ -100,7 +100,7 @@ def days_in_calendar(message, quantity_days):
     inline_button_choice_day = [types.InlineKeyboardButton(text=f'{day}', callback_data=f'{day}') for
                                 day in days]
     inline_markup_choice_day = types.InlineKeyboardMarkup().add(*inline_button_choice_day)
-    bot.send_message(chat_id=message.from_user.id, text='Выберите интересующий вас день',
+    bot.send_message(chat_id=message.chat.id, text='Выберите интересующий вас день',
                      reply_markup=inline_markup_choice_day)
 
 
@@ -112,7 +112,7 @@ def difference_events(message):
     inline_markup_choice_event = types.InlineKeyboardMarkup().add(inline_button_concert, inline_button_cinema,
                                                                   inline_button_performance,
                                                                   inline_button_exhibition)
-    bot.send_message(chat_id=message.from_user.id, text='Выберите интересующее вас мероприятие',
+    bot.send_message(chat_id=message.chat.id, text='Выберите интересующее вас мероприятие',
                      reply_markup=inline_markup_choice_event)
 
 
