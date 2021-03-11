@@ -23,7 +23,7 @@ class Date:
 def choice_city(callback):
     alphabet = 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЧШЩЭЮЯ'
     if callback.data == 'Ввести свой город самостоятельно':
-        msg_entered_city = bot.send_message(chat_id=callback.from_user.id, text='Введите ваш город')
+        msg_entered_city = bot.send_message(chat_id=callback.message.chat.id, text='Введите ваш город')
         bot.register_next_step_handler(msg_entered_city, writing_entered_city)
 
     for char in alphabet:
