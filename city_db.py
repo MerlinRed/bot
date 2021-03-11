@@ -42,7 +42,7 @@ def select_city(rus_city):
                     (rus_city,))
         connection.commit()
         fetch = cur.fetchone()
-        return fetch[1] if fetch is not None else None
+        return fetch[0] if fetch is not None else None
     except InFailedSqlTransaction:
         connection.rollback()
 
@@ -50,7 +50,7 @@ def select_city(rus_city):
 __create_table_cities()
 __create_index()
 
-if select_city('санкт-петербург') is None:
+if not select_city('санкт-петербург'):
     response = requests.get(url='https://www.afisha.ru/')
     all_cities = BeautifulSoup(response.content, 'html.parser').find('ul', class_='city-switcher__list')
     for city_name in all_cities.find_all('a', {'class': 'city-switcher__item-link'}, href=True):
