@@ -21,17 +21,17 @@ class Password:
 def authorization(message):
     if select_user_from_db(user_id=message.from_user.id, email=Email.email, password=Password.password):
         if not check_email_authorization(user_id=message.from_user.id):
-            bot.send_message(chat_id=message.chat.id,
+            bot.send_message(chat_id=message.from_user.id,
                              text='Вы не можете пользоваться ботом пока не подтвердите свою почту.')
             return
-        bot.send_message(chat_id=message.chat.id, text='Авторизация прошла успешно. Доступ к боту открыт.')
+        bot.send_message(chat_id=message.from_user.id, text='Авторизация прошла успешно. Доступ к боту открыт.')
         update_user_authorization(user_id=message.from_user.id)
     else:
-        bot.send_message(chat_id=message.chat.id, text='Ошибка при авторизации. Попробуйте еще раз.')
+        bot.send_message(chat_id=message.from_user.id, text='Ошибка при авторизации. Попробуйте еще раз.')
 
 
 def authorization_email(message):
-    bot.send_message(chat_id=message.chat.id, text='Проверка адреса почты.')
+    bot.send_message(chat_id=message.from_user.id, text='Проверка адреса почты.')
     email = message.text
 
     logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
@@ -40,10 +40,10 @@ def authorization_email(message):
 
     if check_valid_email(email):
         Email.email = email
-        msg_password = bot.send_message(chat_id=message.chat.id, text='Введите пароль для авторизации.')
+        msg_password = bot.send_message(chat_id=message.from_user.id, text='Введите пароль для авторизации.')
         bot.register_next_step_handler(msg_password, authorization_email_password)
     else:
-        bot.send_message(chat_id=message.chat.id, text='Вы ввели некорректный адрес почты.')
+        bot.send_message(chat_id=message.from_user.id, text='Вы ввели некорректный адрес почты.')
 
 
 def authorization_email_password(message):

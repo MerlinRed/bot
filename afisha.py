@@ -24,19 +24,19 @@ def declension_month(month):
 def select_event(message, city, date, concert=False, exhibition=False, performance=False, movie=False):
     if concert:
         url = f'https://www.afisha.ru/{city}/schedule_concert/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск событий...')
+        bot.send_message(chat_id=message.from_user.id, text='Идет поиск событий...')
         search_concert(message=message, url=url)
     elif exhibition:
         url = f'https://www.afisha.ru/{city}/schedule_exhibition/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск событий...')
+        bot.send_message(chat_id=message.from_user.id, text='Идет поиск событий...')
         search_exhibition(message=message, url=url)
     elif performance:
         url = f'https://www.afisha.ru/{city}/schedule_theatre/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск событий...')
+        bot.send_message(chat_id=message.from_user.id, text='Идет поиск событий...')
         search_performance(message=message, url=url)
     elif movie:
         url = f'https://www.afisha.ru/{city}/schedule_cinema/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск событий...')
+        bot.send_message(chat_id=message.from_user.id, text='Идет поиск событий...')
         search_cinema(message=message, url=url)
 
 
@@ -66,26 +66,26 @@ def search_concert(message, url):
         for concert in sort_concerts:
 
             try:
-                bot.send_message(chat_id=message.chat.id,
+                bot.send_message(chat_id=message.from_user.id,
                                  text=f'жанр - {concert[0]}\nназвание - {concert[1]}\n'
                                       f'место и дата - {concert[2]}\nописание - {concert[3]}')
             except IndexError:
                 try:
-                    bot.send_message(chat_id=message.chat.id,
+                    bot.send_message(chat_id=message.from_user.id,
                                      text=f'жанр - {concert[0]}\nназвание - {concert[1]}\nместо и дата - {concert[2]}')
                 except IndexError:
-                    bot.send_message(chat_id=message.chat.id,
+                    bot.send_message(chat_id=message.from_user.id,
                                      text=f'жанр - {concert[0]}\nназвание - {concert[1]}')
             except UnboundLocalError:
                 try:
-                    bot.send_message(chat_id=message.chat.id,
+                    bot.send_message(chat_id=message.from_user.id,
                                      text=f'название - {concert[1]}\nместо и дата - {concert[2]}\nописание - {concert[3]}')
                 except IndexError:
-                    bot.send_message(chat_id=message.chat.id,
+                    bot.send_message(chat_id=message.from_user.id,
                                      text=f'название - {concert[1]}\nместо и дата - {concert[2]}')
 
     except AttributeError:
-        bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')
+        bot.send_message(chat_id=message.from_user.id, text='Ничего не найдено.')
 
 
 def search_exhibition(message, url):
@@ -108,16 +108,16 @@ def search_exhibition(message, url):
         for exhibition in sort_exhibitions:
 
             try:
-                bot.send_message(chat_id=message.chat.id,
+                bot.send_message(chat_id=message.from_user.id,
                                  text=f'жанр - {exhibition[0]}\nназвание - {exhibition[1]}\n'
                                       f'место и дата окончания выстовки - {exhibition[2]}\nописание - {exhibition[3]}')
             except IndexError:
-                bot.send_message(chat_id=message.chat.id,
+                bot.send_message(chat_id=message.from_user.id,
                                  text=f'жанр - {exhibition[0]}\nназвание - {exhibition[1]}\n'
                                       f'место и дата окончания выстовки - {exhibition[2]}')
 
     except AttributeError:
-        bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')
+        bot.send_message(chat_id=message.from_user.id, text='Ничего не найдено.')
 
 
 def search_performance(message, url):
@@ -141,15 +141,15 @@ def search_performance(message, url):
         for performance in sort_performance:
 
             try:
-                bot.send_message(chat_id=message.chat.id,
+                bot.send_message(chat_id=message.from_user.id,
                                  text=f'жанр - {performance[0]}\nназвание - {performance[1]}\n'
                                       f'место и дата - {performance[2]}\nописание - {performance[3]}')
             except IndexError:
-                bot.send_message(chat_id=message.chat.id,
+                bot.send_message(chat_id=message.from_user.id,
                                  text=f'жанр - {performance[0]}\nназвание - {performance[1]}\n'
                                       f'место и дата - {performance[2]}')
     except AttributeError:
-        bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')
+        bot.send_message(chat_id=message.from_user.id, text='Ничего не найдено.')
 
 
 def search_cinema(message, url):

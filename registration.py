@@ -9,7 +9,7 @@ from users_db import insert_user_in_db, select_user_account
 
 
 def registration(message):
-    bot.send_message(chat_id=message.chat.id, text='Проверка адреса почты')
+    bot.send_message(chat_id=message.from_user.id, text='Проверка адреса почты')
     email = message.text
 
     logging.basicConfig(format=u'%(filename)s [LINE:%(lineno)d] #%(levelname)-8s [%(asctime)s]  %(message)s',
@@ -22,10 +22,10 @@ def registration(message):
                           last_name=message.chat.last_name,
                           email=email, password=password)
         send_password_to_email(email=email, password=password)
-        bot.send_message(chat_id=message.chat.id,
+        bot.send_message(chat_id=message.from_user.id,
                          text="""Перейдите на ранее введенную вами почту.\nВам было прислано сообщение в котором содержится ваш пароль от аккаунта и ссылка для подтверждения вашей почты.\nБез подтверждения почты аккаунт не активен.\nЕсли вы не нашли сообщение, посмотрите в спаме.""")
     else:
-        bot.send_message(chat_id=message.chat.id, text='Вы ввели некорректный адрес почты.')
+        bot.send_message(chat_id=message.from_user.id, text='Вы ввели некорректный адрес почты.')
 
 
 def check_valid_email(email):
