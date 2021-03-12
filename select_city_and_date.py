@@ -9,8 +9,8 @@ from manipulation_with_cities_file import search_file_with_cites
 
 
 @dataclass
-class IdCityDate:
-    id_city_date: dict
+class Data:
+    user: dict
 
 
 @bot.callback_query_handler(func=lambda callback: True)
@@ -23,61 +23,51 @@ def choice_city(callback):
 
     for char in alphabet:
         if callback.data == char:
-            callback.message.from_user.id = callback.from_user.id
             select_name_your_city(message=callback.message, char=char)
 
     for city in [city for city in look_all_cities()]:
         if callback.data == city:
-            callback.message.from_user.id = callback.from_user.id
             writing_selected_city(message=callback.message, city=callback.data)
 
     if callback.data in ['Январь', 'Март', 'Май', 'Июль', 'Август', 'Октябрь', 'Декабрь']:
-        callback.message.from_user.id = callback.from_user.id
         month = declension_month(month=callback.data)
-        IdCityDate.id_city_date[callback.message.from_user.id].append(month)
+        Data.user[callback.from_user.id].append(month)
         days_in_calendar(message=callback.message, quantity_days=31)
     elif callback.data in ['Апрель', 'Июнь', 'Сентябрь', 'Ноябрь']:
-        callback.message.from_user.id = callback.from_user.id
         month = declension_month(month=callback.data)
-        IdCityDate.id_city_date[callback.message.from_user.id].append(month)
+        Data.user[callback.from_user.id].append(month)
         days_in_calendar(message=callback.message, quantity_days=30)
     elif callback.data == 'Февраль':
-        callback.message.from_user.id = callback.from_user.id
         month = declension_month(month=callback.data)
-        IdCityDate.id_city_date[callback.message.from_user.id].append(month)
+        Data.user[callback.from_user.id].append(month)
         days_in_calendar(message=callback.message, quantity_days=28)
 
     if callback.data in ['0' + str(x) if x in [1, 2, 3, 4, 5, 6, 7, 8, 9] else str(x) for x in range(1, 31 + 1)]:
-        callback.message.from_user.id = callback.from_user.id
-        IdCityDate.id_city_date[callback.message.from_user.id].append(callback.data)
+        day = callback.data
+        Data.user[callback.from_user.id].append(day)
         difference_events(callback.message)
 
     if callback.data == 'Концерты':
-        callback.message.from_user.id = callback.from_user.id
-        if callback.message.from_user.id in IdCityDate.id_city_date:
-            select_event(message=callback.message, city=IdCityDate.id_city_date[callback.message.from_user.id][0],
-                         date=f'{IdCityDate.id_city_date[callback.message.from_user.id][2]}-{IdCityDate.id_city_date[callback.message.from_user.id][1]}',
-                         concert=True)
+        if callback.from_user.id in Data.user:
+            select_event(message=callback.message, city=Data.user[callback.from_user.id][0],
+                         date=f'{Data.user[callback.from_user.id][2]}-{Data.user[callback.from_user.id][1]}', concert=True)
 
     elif callback.data == 'Театр':
-        callback.message.from_user.id = callback.from_user.id
-        if callback.message.from_user.id in IdCityDate.id_city_date:
-            select_event(message=callback.message, city=IdCityDate.id_city_date[callback.message.from_user.id][0],
-                         date=f'{IdCityDate.id_city_date[callback.message.from_user.id][2]}-{IdCityDate.id_city_date[callback.message.from_user.id][1]}',
+        if callback.from_user.id in Data.user:
+            select_event(message=callback.message, city=Data.user[callback.from_user.id][0],
+                         date=f'{Data.user[callback.from_user.id][2]}-{Data.user[callback.from_user.id][1]}',
                          performance=True)
 
     elif callback.data == 'Выставки':
-        callback.message.from_user.id = callback.from_user.id
-        if callback.message.from_user.id in IdCityDate.id_city_date:
-            select_event(message=callback.message, city=IdCityDate.id_city_date[callback.message.from_user.id][0],
-                         date=f'{IdCityDate.id_city_date[callback.message.from_user.id][2]}-{IdCityDate.id_city_date[callback.message.from_user.id][1]}',
+        if callback.from_user.id in Data.user:
+            select_event(message=callback.message, city=Data.user[callback.from_user.id][0],
+                         date=f'{Data.user[callback.from_user.id][2]}-{Data.user[callback.from_user.id][1]}',
                          exhibition=True)
 
     elif callback.data == 'Кино':
-        callback.message.from_user.id = callback.from_user.id
-        if callback.message.from_user.id in IdCityDate.id_city_date:
-            select_event(message=callback.message, city=IdCityDate.id_city_date[callback.message.from_user.id][0],
-                         date=f'{IdCityDate.id_city_date[callback.message.from_user.id][2]}-{IdCityDate.id_city_date[callback.message.from_user.id][1]}',
+        if callback.from_user.id in Data.user:
+            select_event(message=callback.message, city=Data.user[callback.from_user.id][0],
+                         date=f'{Data.user[callback.from_user.id][2]}-{Data.user[callback.from_user.id][1]}',
                          movie=True)
 
 
@@ -137,14 +127,14 @@ def difference_events(message):
 
 
 def writing_entered_city(message):
-    IdCityDate.id_city_date = []
+    Data.user[message.from_user.id] = []
     city = city_name_in_url(city=message.text.lower())
-    IdCityDate.id_city_date[message.from_user.id].append(city_name_in_url(city=city))
+    Data.user[message.from_user.id].append(city)
     months_in_calendar(message=message)
 
 
 def writing_selected_city(message, city):
-    IdCityDate.id_city_date = []
+    Data.user[message.from_user.id] = []
     city = city_name_in_url(city=city.lower())
-    IdCityDate.id_city_date[message.from_user.id].append(city_name_in_url(city=city))
+    Data.user[message.from_user.id].append(city)
     months_in_calendar(message=message)
