@@ -24,19 +24,19 @@ def declension_month(month):
 def select_event(message, city, date, concert=False, exhibition=False, performance=False, movie=False):
     if concert:
         url = f'https://www.afisha.ru/{city}/schedule_concert/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск событий...')
+        bot.send_message(chat_id=message.chat.id, text='Идет поиск концертов...')
         search_concert(message=message, url=url)
     elif exhibition:
         url = f'https://www.afisha.ru/{city}/schedule_exhibition/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск событий...')
+        bot.send_message(chat_id=message.chat.id, text='Идет поиск выставок...')
         search_exhibition(message=message, url=url)
     elif performance:
         url = f'https://www.afisha.ru/{city}/schedule_theatre/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск событий...')
+        bot.send_message(chat_id=message.chat.id, text='Идет поиск спектаклей...')
         search_performance(message=message, url=url)
     elif movie:
         url = f'https://www.afisha.ru/{city}/schedule_cinema/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск событий...')
+        bot.send_message(chat_id=message.chat.id, text='Идет поиск фильмов...')
         search_cinema(message=message, url=url)
 
 
