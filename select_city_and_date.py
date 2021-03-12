@@ -138,11 +138,13 @@ def difference_events(message):
 
 def writing_entered_city(message):
     IdCityDate.id_city_date = []
-    IdCityDate.id_city_date[message.from_user.id].append(city_name_in_url(city=message.text.lower()))
+    city = city_name_in_url(city=message.text.lower())
+    IdCityDate.id_city_date[message.from_user.id].append(city_name_in_url(city=city))
     months_in_calendar(message=message)
 
 
 def writing_selected_city(message, city):
     IdCityDate.id_city_date = []
-    IdCityDate.id_city_date[message.from_user.id].append(city_name_in_url(city=city.lower()()))
+    city = city_name_in_url(city=city.lower())
+    IdCityDate.id_city_date[message.from_user.id].append(city_name_in_url(city=city))
     months_in_calendar(message=message)
