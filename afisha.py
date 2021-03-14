@@ -25,7 +25,8 @@ def select_event(message, city, date, concert=False, exhibition=False, performan
     if concert:
         url = f'https://www.afisha.ru/{city}/schedule_concert/{date}/'
         bot.send_message(chat_id=message.chat.id, text='Идет поиск концертов...')
-        search_concert(message=message, url=url)
+        search_class = '_3cJdx _2nJif like-container'
+        search_concert(message=message, url=url, search_class=search_class)
     elif exhibition:
         url = f'https://www.afisha.ru/{city}/schedule_exhibition/{date}/'
         bot.send_message(chat_id=message.chat.id, text='Идет поиск выставок...')
@@ -40,13 +41,13 @@ def select_event(message, city, date, concert=False, exhibition=False, performan
         search_cinema(message=message, url=url)
 
 
-def search_concert(message, url):
+def search_concert(message, url, search_class):
     try:
 
         list_concerts = []
         response = requests.get(url=url)
         events = BeautifulSoup(response.content, 'html.parser').find('div', class_='content content_view_cards')
-        for event in events.find_all('section', {'class': '_3cJdx _2nJif like-container'}):
+        for event in events.find_all('section', {'class': search_class}):
             for genre in event.find_all('a', {'class': 'WR4gB'}): ...
             for name in event.find_all('h3', {'class': 'heHLK'}): ...
             for time in event.find_all('div', {'class': '_1Jo7v'}): ...
@@ -58,7 +59,7 @@ def search_concert(message, url):
             list_concerts.append(
                 (genre_for_all_events, name_for_all_events, time_for_all_events, description_for_all_events))
 
-        sort_concerts = sorted(set(list_concerts))
+        sort_concerts = sorted(set(list_concerts), key=lambda x: x[2])
         for concert in sort_concerts:
             bot.send_message(chat_id=message.chat.id, text=f'жанр - {concert[0]}\nназвание - {concert[1]}\n'
                                                            f'место и дата - {concert[2]}\nописание - {concert[3]}')
