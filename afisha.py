@@ -2,9 +2,9 @@ import pymorphy2
 import requests
 from bs4 import BeautifulSoup
 
+from city_db import select_city
 from load_all import bot
 from transliteration import transliteration_data
-from city_db import select_city
 
 
 def city_name_in_url(city):
@@ -40,7 +40,8 @@ def select_event(message, city, date, concert=False, exhibition=False, performan
     elif movie:
         url = f'https://www.afisha.ru/{city}/schedule_cinema/{date}/'
         bot.send_message(chat_id=message.chat.id, text='Идет поиск фильмов...')
-        search_cinema(message=message, url=url)
+        search_class = 'oIhSV _2nJif like-container'
+        search_events(message=message, url=url, search_class=search_class)
 
 
 def search_events(message, url, search_class):
@@ -57,38 +58,24 @@ def search_events(message, url, search_class):
             description_for_all_events = '' if description == [] else description[0].get_text()
             genre_for_all_events = '' if genre == [] else genre.get_text()
             name_for_all_events = '' if name == [] else name.get_text()
-            time_for_all_events = '' if time == [] else time.get_text()
-            list_events.append(
-                (genre_for_all_events, name_for_all_events, time_for_all_events, description_for_all_events))
+            if search_class != 'oIhSV _2nJif like-container':
+                time_for_all_events = '' if time == [] else time.get_text()
+                list_events.append(
+                    (genre_for_all_events, name_for_all_events, time_for_all_events, description_for_all_events))
+            else:
+                list_events.append(
+                    (genre_for_all_events, name_for_all_events, description_for_all_events))
 
-        sort_concerts = sorted(set(list_events), key=lambda x: x[2])
-        for concert in sort_concerts:
-            bot.send_message(chat_id=message.chat.id, text=f'жанр - {concert[0]}\nназвание - {concert[1]}\n'
-                                                           f'место и дата - {concert[2]}\nописание - {concert[3]}')
-
-    except AttributeError:
-        bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')
-
-
-def search_cinema(message, url):
-    try:
-
-        list_movies = []
-        response = requests.get(url=url)
-        events = BeautifulSoup(response.content, 'html.parser').find('div', class_='content content_view_cards')
-        for event in events.find_all('section', {'class': 'oIhSV _2nJif like-container'}):
-            for genre in event.find_all('a', {'class': 'WR4gB'}): ...
-            for name in event.find_all('h3', {'class': 'heHLK'}): ...
-            description = [div for div in event.select('div') if not div.has_attr('class')]
-            description_for_all_events = '' if description == [] else description[0].get_text()
-            genre_for_all_events = '' if genre == [] else genre.get_text()
-            name_for_all_events = '' if name == [] else name.get_text()
-            list_movies.append((genre_for_all_events, name_for_all_events, description_for_all_events))
-
-        sort_movies = sorted(set(list_movies))
-        for movie in sort_movies:
-            bot.send_message(chat_id=message.chat.id,
-                             text=f'жанр - {movie[0]}\nназвание - {movie[1]}\nописание - {movie[2]}')
+        if search_class == 'oIhSV _2nJif like-container':
+            sort_events = sorted(set(list_events), key=lambda x: x[0])
+            for events in sort_events:
+                bot.send_message(chat_id=message.chat.id,
+                                 text=f'жанр - {events[0]}\nназвание - {events[1]}\nописание - {events[2]}')
+        else:
+            sort_events = sorted(set(list_events), key=lambda x: x[2][-6:-1])
+            for events in sort_events:
+                bot.send_message(chat_id=message.chat.id, text=f'жанр - {events[0]}\nназвание - {events[1]}\n'
+                                                               f'место и дата - {events[2]}\nописание - {events[3]}')
 
     except AttributeError:
         bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')
