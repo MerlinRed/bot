@@ -1,12 +1,9 @@
-from dataclasses import dataclass
-
 from telebot import types
 
 from afisha import city_name_in_url, select_event, declension_month
 from load_all import bot
 from manipulation_with_cities_file import look_all_cities
 from manipulation_with_cities_file import search_file_with_cites
-
 
 Data = {}
 

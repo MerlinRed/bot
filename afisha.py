@@ -1,10 +1,8 @@
-import pymorphy2
 import requests
 from bs4 import BeautifulSoup
 
 from city_db import select_city
 from load_all import bot
-from transliteration import transliteration_data
 
 
 def city_name_in_url(city):
@@ -14,11 +12,11 @@ def city_name_in_url(city):
 
 
 def declension_month(month):
-    morph = pymorphy2.MorphAnalyzer()
-    declension = morph.parse(f'{month}')[0]
-    declension_genitive = declension.inflect({'gent'})
-    transliteration_month = transliteration_data(data=declension_genitive.word)
-    return transliteration_month
+    months = {'Январь': 'yanvarya', 'Февраль': 'fevralya', 'Март': 'marta', 'Апрель': 'aprelya',
+              'Май': 'maya', 'Июнь': 'iunya', 'Июль': 'iulya', 'Август': 'avgusta', 'Сентябрь': 'sentyabrya',
+              'Октябрь': 'oktyabrya', 'Ноябрь': 'noyabrya', 'Декабрь': 'dekabrya'
+              }
+    return months[month]
 
 
 def select_event(message, city, date, concert=False, exhibition=False, performance=False, movie=False):
