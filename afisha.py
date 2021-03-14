@@ -22,22 +22,22 @@ def declension_month(month):
 def select_event(message, city, date, concert=False, exhibition=False, performance=False, movie=False):
     if concert:
         url = f'https://www.afisha.ru/{city}/schedule_concert/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск концертов...')
+        bot.send_message(chat_id=message.from_user.id, text='Идет поиск концертов...')
         search_class = '_3cJdx _2nJif like-container'
         search_events(message=message, url=url, search_class=search_class)
     elif exhibition:
         url = f'https://www.afisha.ru/{city}/schedule_exhibition/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск выставок...')
+        bot.send_message(chat_id=message.from_user.id, text='Идет поиск выставок...')
         search_class = '_1ER_u _2nJif like-container'
         search_events(message=message, url=url, search_class=search_class)
     elif performance:
         url = f'https://www.afisha.ru/{city}/schedule_theatre/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск спектаклей...')
+        bot.send_message(chat_id=message.from_user.id, text='Идет поиск спектаклей...')
         search_class = 'jP8J- _2nJif like-container'
         search_events(message=message, url=url, search_class=search_class)
     elif movie:
         url = f'https://www.afisha.ru/{city}/schedule_cinema/{date}/'
-        bot.send_message(chat_id=message.chat.id, text='Идет поиск фильмов...')
+        bot.send_message(chat_id=message.from_user.id, text='Идет поиск фильмов...')
         search_class = 'oIhSV _2nJif like-container'
         search_events(message=message, url=url, search_class=search_class)
 
@@ -67,13 +67,13 @@ def search_events(message, url, search_class):
         if search_class == 'oIhSV _2nJif like-container':
             sort_events = sorted(set(list_events), key=lambda x: x[0])
             for events in sort_events:
-                bot.send_message(chat_id=message.chat.id,
+                bot.send_message(chat_id=message.from_user.id,
                                  text=f'жанр - {events[0]}\nназвание - {events[1]}\nописание - {events[2]}')
         else:
             sort_events = sorted(set(list_events), key=lambda x: x[2][-6:-1])
             for events in sort_events:
-                bot.send_message(chat_id=message.chat.id, text=f'жанр - {events[0]}\nназвание - {events[1]}\n'
-                                                               f'место и дата - {events[2]}\nописание - {events[3]}')
+                bot.send_message(chat_id=message.from_user.id, text=f'жанр - {events[0]}\nназвание - {events[1]}\n'
+                                                                    f'место и дата - {events[2]}\nописание - {events[3]}')
 
     except AttributeError:
         bot.send_message(chat_id=message.chat.id, text='Ничего не найдено.')
